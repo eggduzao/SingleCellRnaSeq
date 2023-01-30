@@ -17,10 +17,10 @@ import os
 import sys
 import time
 import warnings
-from random import seed
+import random
 
 # Internal
-
+from src.util import ErrorHandler, JuicerCommand, CoolerCommand, ChromosomeSizes
 
 # External
 
@@ -52,13 +52,11 @@ def main():
     if not sys.warnoptions:
         warnings.simplefilter("ignore")
     
-    print("Hello World!")
+    #print("Hello World!")
+    print("Hi!")
     
     # Workflow starting time
     start_timestamp = time.time()
-
-    # Setting seed
-    seed(123)
     
     # Config data classes
     juicer_command = JuicerCommand() # TOREMOVE
@@ -93,6 +91,9 @@ def main():
     sica_pvalue_threshold = opts.sica_pvalue_threshold # TOREMOVE
     sica_bottom_bin_ext_range = [int(e) for e in opts.sica_bottom_bin_ext_range.split(",")] # TOREMOVE
 
+
+    # Setting seed
+    random.seed(seed)
     
     ###############################################################################################
     # Input

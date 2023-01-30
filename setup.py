@@ -38,13 +38,13 @@ Tools Dictionary Standard:
 """
 
 # Common dependencies.
-common_deps = ["numpy>=1.12.0",
-               "scipy>=1.4.0"]
+common_deps = ["numpy>=1.21.0",
+               "scipy>=1.10.0"]
 
 tools_dictionary = {
     "scaw": (
         "scaw",
-        "src.Main:main",
+        "src.main:main",
         ["numpy>=1.21.0", "scipy>=1.10.0", "pandas>=1.5.0", "scanpy>=1.9.0", "anndata>=0.8.0"],
         []
     )
