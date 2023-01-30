@@ -1,5 +1,5 @@
 *.pyc
-RGT.egg-info/
+SCAW.egg-info/
 build/
 dist/
 .DS_Store
