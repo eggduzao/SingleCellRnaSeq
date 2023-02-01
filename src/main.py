@@ -21,6 +21,7 @@ import random
 
 # Internal
 from src.util import ErrorHandler, JuicerCommand, CoolerCommand, ChromosomeSizes
+from src.arguments import ArgumentParser
 
 # External
 
@@ -52,16 +53,8 @@ def main():
     if not sys.warnoptions:
         warnings.simplefilter("ignore")
     
-    #print("Hello World!")
-    print("Hi!")
-    
     # Workflow starting time
     start_timestamp = time.time()
-    
-    # Config data classes
-    juicer_command = JuicerCommand() # TOREMOVE
-    cooler_command = CoolerCommand() # TOREMOVE
-    chromosome_sizes = ChromosomeSizes(organism)
     
     
     ###############################################################################################
@@ -94,6 +87,11 @@ def main():
 
     # Setting seed
     random.seed(seed)
+    
+    # Config data classes
+    juicer_command = JuicerCommand() # TOREMOVE
+    cooler_command = CoolerCommand() # TOREMOVE
+    chromosome_sizes = ChromosomeSizes(organism)
     
     ###############################################################################################
     # Input

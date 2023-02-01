@@ -68,7 +68,7 @@ class ConfigurationFile:
         self.config.read_file(codecs.open(self.scaw_config_file_name, "rU", "utf8"))
 
         # Reading data directory
-        self.data_dir = os.path.split(data_config_file_name)[0]
+        #self.data_dir = os.path.split(data_config_file_name)[0]
 
 class GenomeData(ConfigurationFile):
     """Represent genomic data. Inherits ConfigurationFile."""

@@ -226,13 +226,18 @@ data_config_file.write("gene_regions: " + os.path.join(genome, "genes_zv9.bed\n"
 data_config_file.write("annotation: " + os.path.join(genome, "Danio_rerio.Zv9.79.gtf\n"))
 data_config_file.write("gene_alias: " + os.path.join(genome, "alias_zebrafish.txt\n\n"))
 
-genome = "zv10"
-data_config_file.write("[" + genome + "]\n")
-data_config_file.write("genome: " + os.path.join(genome, "genome_zv10_ensembl_release_84.fa\n"))
-data_config_file.write("chromosome_sizes: " + os.path.join(genome, "chrom.sizes.zv10\n"))
-data_config_file.write("gene_regions: " + os.path.join(genome, "genes_zv10.bed\n"))
-data_config_file.write("annotation: " + os.path.join(genome, "Danio_rerio.GRCz10.84.gtf\n"))
-data_config_file.write("gene_alias: " + os.path.join(genome, "alias_zebrafish.txt\n\n"))
+######
+
+session = "Cooler"
+data_config_file.write("[" + session + "]\n")
+data_config_file.write("command: cooler\n\n")
+
+session = "Juicer"
+data_config_file.write("[" + session + "]\n")
+data_config_file.write("command: java\n")
+data_config_file.write("options: -Djava.awt.headless=true -Xmx32000m -jar\n")
+data_config_file.write("jar: bin/juicer_tools_1.22.01.jar\n\n")
+
 
 data_config_file.close()
 
