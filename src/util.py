@@ -68,7 +68,7 @@ class ConfigurationFile:
         self.config.read_file(codecs.open(self.scaw_config_file_name, "rU", "utf8"))
 
         # Reading data directory
-        #self.data_dir = os.path.split(data_config_file_name)[0]
+        self.data_dir = self.scaw_data_path
 
 class GenomeData(ConfigurationFile):
     """Represent genomic data. Inherits ConfigurationFile."""
@@ -129,6 +129,86 @@ class GenomeData(ConfigurationFile):
             return self.repeat_maskers
         else:
             print("*** There is no repeat masker data for " + self.organism)
+
+
+
+class GeneAlias(ConfigurationFile):
+    """This class represents TODO.
+
+    *Keyword arguments:*
+
+      - argument1 -- Short description. This argument represents a long description. It can be:
+        - Possibility 1: A possibility 1.
+        - Possibility 2: A possibility 2.
+  
+      - argument2 -- Short description. This argument represents a long description. It can be:
+        - Possibility 1: A possibility 1.
+        - Possibility 2: A possibility 2.
+    """
+
+    def __init__(self, organism):
+        """Returns TODO.
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+
+        # Configuration file initialization
+        ConfigurationFile.__init__(self)
+        self.organism = organism
+        self.gene_alias = os.path.join(self.data_dir, self.config.get(organism, 'gene_alias'))
+        
+        # Gene alias dictionary
+        self.gene_alias_dict = dict()
+        gene_alias_file = open(self.gene_alias, "r")
+        for line in gene_alias_file:
+          ll = line.strip().split("\t")
+          ensg_id = ll[0]
+          gene_name = ll[1]
+          alias_list = ll[2].split("&")
+          for gene_n in [ensg_id] + alias_list:
+              self.gene_alias_dict[gene_n] = gene_name
+        gene_alias_file.close()
+
+    def put_gene_names_in_csv_matrix(self, input_matrix_file_name, output_matrix_file_name):
+        """Changes all the gene symbols to gene names in the input matrix file. First line
+           of the matrix must be the gene symbols to translate
+        """
+
+        # Reading matrices and gene line
+        input_matrix_file = open(input_matrix_file_name, "r")
+        output_matrix_file = open(output_matrix_file_name, "w")
+        gene_names = input_matrix_file.readline().split(",")
+        
+        # Iterating on gene line and translating
+        gene_vec = []
+        for gene in gene_names:
+            try:
+                newgene = alias_dict[gene]
+            except Exception:
+                newgene = gene
+            gene_vec.append(newgene)
+            
+        # Writing the results to new matrix
+        output_matrix_file.write(",".join(gene_vec)+"\n")
+        for line in input_matrix_file: output_matrix_file.write(line)
+        input_matrix_file.close()
+        output_matrix_file.close()
+
+
+
+
+
+
+
+
+
+
 
 
 class JuicerCommand(ConfigurationFile):
@@ -193,45 +273,6 @@ class CoolerCommand(ConfigurationFile):
         ConfigurationFile.__init__(self)
         self.cooler_command = self.config.get("Cooler", "command")
 
-class ChromosomeSizes(ConfigurationFile):
-    """This class represents TODO.
-
-    *Keyword arguments:*
-
-      - argument1 -- Short description. This argument represents a long description. It can be:
-        - Possibility 1: A possibility 1.
-        - Possibility 2: A possibility 2.
-
-      - argument2 -- Short description. This argument represents a long description. It can be:
-        - Possibility 1: A possibility 1.
-        - Possibility 2: A possibility 2.
-    """
-
-    def __init__(self, organism):
-        """Returns TODO.
-    
-        *Keyword arguments:*
-    
-          - argument -- An argument.
-    
-        *Return:*
-    
-          - return -- A return.
-        """
-
-        # Configuration file initialization
-        ConfigurationFile.__init__(self)
-        self.organism = organism
-        self.chromosome_sizes_file_name = os.path.join(self.scaw_data_path, self.config.get("ChromosomeSizes", organism))
-
-        # Creating chromosome sizes dictionary and chromosome list
-        self.chromosome_sizes_dictionary = dict()
-        chrom_sizes_file = codecs.open(self.chromosome_sizes_file_name, "rU", "utf8")
-        for line in chrom_sizes_file:
-            ll = line.strip().split("\t")
-            self.chromosome_sizes_dictionary[ll[0]] = int(ll[1])
-        chrom_sizes_file.close()
-        self.chromosome_sizes_list = sorted(self.chromosome_sizes_dictionary.keys())
 
 
 ###################################################################################################

@@ -211,8 +211,8 @@ class ArgumentParser():
 
         # Hidden Options
 
-        pre_min_contig_removed_bins_help = None
-        self.add_option("A", "pre_min_contig_removed_bins", "int", "INT", 5, pre_min_contig_removed_bins_help)
+        io_input_file_is_reversed_help = None
+        self.add_option("A", "io_input_file_is_reversed", "bool", "BOOLFALSE", None, io_input_file_is_reversed_help)
 
         pre_remove_threshold_help = None
         self.add_option("B", "pre_remove_threshold", "float", "FLOAT", 0.0, pre_remove_threshold_help)
