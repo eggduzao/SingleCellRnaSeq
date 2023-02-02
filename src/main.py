@@ -24,6 +24,7 @@ from src.__version__ import __version__
 from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias
 from src.arguments import ArgumentParser
 from src.io import InputOutput
+from src.quality_control import QualityControl
 
 # External
 import numpy as np
@@ -37,6 +38,9 @@ import statsmodels as st
 import igraph as ig
 import louvain as lo
 import pynndescent as nn
+import seaborn as se
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 ###################################################################################################
 # Tool Execution
@@ -71,6 +75,10 @@ def main():
     # Files to delete at the end of the workflow
     files_to_remove = []
     
+    # Scanpy initializations
+    sc.settings.verbosity = 0
+    sc.settings.set_figure_params(dpi=80, facecolor='white')
+    
     ###############################################################################################
     # Parameters
     ###############################################################################################
@@ -81,7 +89,7 @@ def main():
     opts = argument_parser.options
 
     # Arguments
-    input_matrix = os.path.abspath(os.path.expanduser(args[0]))
+    input_matrix_file_name = os.path.abspath(os.path.expanduser(args[0]))
     temporary_location = os.path.abspath(os.path.expanduser(args[1]))
     output_location = os.path.abspath(os.path.expanduser(args[2]))
 
@@ -94,6 +102,8 @@ def main():
 
     # Hidden Options
     io_input_file_is_reversed = opts.io_input_file_is_reversed
+    
+    print(io_input_file_is_reversed)
     
     #pre_min_contig_removed_bins = opts.pre_min_contig_removed_bins # TOREMOVE
     #pre_remove_threshold = opts.pre_remove_threshold # TOREMOVE
@@ -113,23 +123,17 @@ def main():
     # Input
     ###############################################################################################
     
+    temporary_file_type = "h5ad"
     
     # Reading input file
-    temporary_file_type = "h5ad"
-    inputoutput_instance = InputOutput(input_matrix, input_type, temporary_file_type, output_type, seed)
+    inputoutput_instance = InputOutput(input_matrix_file_name, input_type, temporary_location, temporary_file_type, output_type, files_to_remove, gene_alias, seed)
     
-    # Treat reversed input file
-    reversed_input_file_name = os.path.join(temporary_location, "reversed_input_file_name.csv")
-    if(io_input_file_is_reversed):
-        pd.read_csv(input_file_name, header=None).T.to_csv(reversed_input_file_name, header=False, index=False)
-        files_to_remove.append(reversed_input_file_name)
-    else:
-        reversed_input_file_name = input_matrix
-
-    # Treat gene aliases
-    alias_input_file_name = os.path.join(temporary_location, "alias_input_file_name.csv")
-    gene_alias.put_gene_names_in_csv_matrix(reversed_input_file_name, alias_input_file_name)
-    files_to_remove.append(alias_input_file_name)
+    # Reading file
+    anndata_expression_matrix = None
+    anndata_expression_matrix = inputoutput_instance.read(io_input_file_is_reversed = io_input_file_is_reversed)
+    
+    print(anndata_expression_matrix)
+    print(anndata_expression_matrix.var[:10])
     
     ###############################################################################################
     # Tool's Versions
@@ -153,25 +157,21 @@ def main():
     igraph_version = ig.__version__
     louvain_version = lo.__version__
     pynndescent_version = nn.__version__
-    
-    print(python_version)
-    print(tool_version)
-    
-    print(numpy_version)
-    print(pandas_version)
-    print(scanpy_version)
-    print(anndata_version)
-    print(umap_version)
-    print(scipy_version)
-    print(sklearn_version)
-    print(statsmodels_version)
-    print(igraph_version)
-    print(louvain_version)
-    print(pynndescent_version)
-    
+    seaborn_version = se.__version__
+    matplotlib_version = mpl.__version__
     
     # Further tool's versions
     # TODO
+    
+    ###############################################################################################
+    # Alignment
+    ###############################################################################################    
+
+    # TODO
+    
+    # Alignment preprocessing time
+    alignment_preprocessing_timestamp = time.time()  
+    
     
     ###############################################################################################
     # Raw Data Preprocessing
@@ -186,7 +186,20 @@ def main():
     # Quality Control
     ###############################################################################################
     
-
+    top_expressed_genes = 20
+    min_genes_per_cell = 200
+    min_cells_per_gene = 3
+    max_number_of_genes_by_counts = 2500
+    max_percentage_mithocondrial_counts = 5
+    
+    # Perform quality control
+    quality_control_instance = QualityControl(anndata_expression_matrix, temporary_location)
+    quality_control_instance.quality_control_workflow(top_expressed_genes = top_expressed_genes,
+                                                      min_genes_per_cell = min_genes_per_cell,
+                                                      min_cells_per_gene = min_cells_per_gene,
+                                                      max_number_of_genes_by_counts = max_number_of_genes_by_counts,
+                                                      max_percentage_mithocondrial_counts = max_percentage_mithocondrial_counts)
+    
     
     # Quality control time
     quality_control_timestamp = time.time()
@@ -196,6 +209,32 @@ def main():
     # Normalization
     ###############################################################################################
     
+    
+    """   
+# Total Count Normalization
+sc.pp.normalize_total(adata, target_sum=1e4)
+
+# Normalize by log1p
+sc.pp.log1p(adata)
+
+# Identify highly variable genes
+sc.pp.highly_variable_genes(adata, min_mean=0.0125, max_mean=3, min_disp=0.5)
+
+# Plot of highly variable genes vs others
+sc.pl.highly_variable_genes(adata, show = False, save='_5.pdf')
+
+adata.raw = adata
+
+# Filter highly variable genes
+adata = adata[:, adata.var.highly_variable]
+
+# Regress out effects of total counts of genes and % mito genes
+sc.pp.regress_out(adata, ['total_counts', 'pct_counts_mt'])
+
+# Scale each gene to unit variance. Clip values exceeding standard deviation 10.
+sc.pp.scale(adata, max_value=10)
+    
+    """
     
     # Normalization
     normalization_timestamp = time.time()

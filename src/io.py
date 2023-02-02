@@ -13,13 +13,14 @@ Authors: Eduardo G. Gusmao.
 ###################################################################################################
 
 # Python
+import os
 import random
 
 # Internal
 
 # External
 from scanpy import read_csv, read_h5ad
-
+import pandas as pd
 
 
 ###################################################################################################
@@ -40,7 +41,7 @@ class InputOutput():
         - Possibility 2: A possibility 2.
     """
 
-    def __init__(self, input_file_name, input_file_type, temporary_file_type, output_file_type, seed = None):
+    def __init__(self, input_file_name, input_file_type, temporary_location, temporary_file_type, output_file_type, files_to_remove, gene_alias_instance, seed = None):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -59,32 +60,19 @@ class InputOutput():
         # Class Parameters
         self.input_file_name = input_file_name
         self.input_file_type = input_file_type
+        self.temporary_location = temporary_location
         self.temporary_file_type = temporary_file_type
         self.output_file_type = output_file_type
         
-        
-        """
-        # Operation type
-        if(operation_type == "read"):
-        
-            # Reading csv file
-            if(input_file_type = "csv"):
-                self.read_csv(input_file_name)
-                
-            # Reading h5ad file
-            elif(input_file_type == "h5ad"):
-                self.read_h5ad(input_file_name)
-        
-        elif(operation_type == "write"):
-            pass
-        """
-
+        # Auxiliary Parameters
+        self.files_to_remove = files_to_remove
+        self.gene_alias_instance = gene_alias_instance
         
     ###############################################################################################
     # Reading
     ###############################################################################################
 
-    def read_csv(self, input_file_name, delimiter = ",", first_column_names = None, dtype = "float32", transpose = False):
+    def read(self, io_input_file_is_reversed = False):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -95,25 +83,30 @@ class InputOutput():
     
           - return -- A return.
         """
-        if(transpose):
-            # ssss
-            pass
-        else:
-            read_csv(input_file_name, delimiter, first_column_names, dtype)
+        
+        # CSV File
+        if(self.input_file_type == "csv"):
+        
+            # Treat reversed input file
+            reversed_input_file_name = os.path.join(self.temporary_location, "reversed_input_file_name.csv")
+            if(io_input_file_is_reversed):
+                pd.read_csv(self.input_file_name, header=None).T.to_csv(reversed_input_file_name, header=False, index=False)
+                self.files_to_remove.append(reversed_input_file_name)
+            else:
+                reversed_input_file_name = self.input_file_name
+
+            # Treat gene aliases
+            alias_input_file_name = os.path.join(self.temporary_location, "alias_input_file_name.csv")
+            self.gene_alias_instance.put_gene_names_in_csv_matrix(reversed_input_file_name, alias_input_file_name)
+            self.files_to_remove.append(alias_input_file_name)
+    
+            return read_csv(self.input_file_name, first_column_names = True)
 
 
-    def read_h5ad(self, input_file_name, backed = None, as_sparse = ()):
-        """Returns TODO.
-    
-        *Keyword arguments:*
-    
-          - argument -- An argument.
-    
-        *Return:*
-    
-          - return -- A return.
-        """
-        read_h5ad(input_file_name, backed, as_sparse)
+        # H5AD File
+        elif(self.input_file_type == "h5ad"):
+        
+            return read_h5ad(self.input_file_name)
 
 
 

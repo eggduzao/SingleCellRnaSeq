@@ -131,7 +131,6 @@ class GenomeData(ConfigurationFile):
             print("*** There is no repeat masker data for " + self.organism)
 
 
-
 class GeneAlias(ConfigurationFile):
     """This class represents TODO.
 
@@ -183,13 +182,13 @@ class GeneAlias(ConfigurationFile):
         # Reading matrices and gene line
         input_matrix_file = open(input_matrix_file_name, "r")
         output_matrix_file = open(output_matrix_file_name, "w")
-        gene_names = input_matrix_file.readline().split(",")
+        gene_names = input_matrix_file.readline().strip().split(",")
         
         # Iterating on gene line and translating
         gene_vec = []
         for gene in gene_names:
             try:
-                newgene = alias_dict[gene]
+                newgene = self.gene_alias_dict[gene]
             except Exception:
                 newgene = gene
             gene_vec.append(newgene)
@@ -199,14 +198,6 @@ class GeneAlias(ConfigurationFile):
         for line in input_matrix_file: output_matrix_file.write(line)
         input_matrix_file.close()
         output_matrix_file.close()
-
-
-
-
-
-
-
-
 
 
 
@@ -562,6 +553,18 @@ class AuxiliaryFunctions:
         """
         revDict = dict([("A", "T"), ("T", "A"), ("C", "G"), ("G", "C"), ("N", "N")])
         return "".join([revDict[e] for e in s[::-1]])
+
+    @staticmethod
+    def save_to_another_folder(figure_name, scanpy_fig_folder_name, temporary_folder_name):
+        """Temporary method to save scanpy's plots to the temporary folder instead of working folder.
+
+        *Keyword arguments:*
+
+            - scanpy_fig_folder_name -- String.
+            - temporary_folder_name -- String.
+        """
+        command = "mv "+os.path.join(scanpy_fig_folder_name,"*"+figure_name)+" "+os.path.join(temporary_folder_name,figure_name)
+        os.system(command)
 
 
 """
