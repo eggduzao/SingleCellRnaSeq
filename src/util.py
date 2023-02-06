@@ -174,31 +174,50 @@ class GeneAlias(ConfigurationFile):
               self.gene_alias_dict[gene_n] = gene_name
         gene_alias_file.close()
 
-    def put_gene_names_in_csv_matrix(self, input_matrix_file_name, output_matrix_file_name):
+    def put_gene_names_in_csv_matrix(self, input_matrix_file_name, output_matrix_file_name, io_input_file_is_reversed = False):
         """Changes all the gene symbols to gene names in the input matrix file. First line
            of the matrix must be the gene symbols to translate
         """
-
-        # Reading matrices and gene line
-        input_matrix_file = open(input_matrix_file_name, "r")
-        output_matrix_file = open(output_matrix_file_name, "w")
-        gene_names = input_matrix_file.readline().strip().split(",")
+        if(io_input_file_is_reversed):
         
-        # Iterating on gene line and translating
-        gene_vec = []
-        for gene in gene_names:
-            try:
-                newgene = self.gene_alias_dict[gene]
-            except Exception:
-                newgene = gene
-            gene_vec.append(newgene)
+            # Reading matrices and gene line
+            input_matrix_file = open(input_matrix_file_name, "r")
+            output_matrix_file = open(output_matrix_file_name, "w")
+            gene_names = input_matrix_file.readline().strip().split(",")
+        
+            # Iterating on gene line and translating
+            gene_vec = []
+            for gene in gene_names:
+                try:
+                    newgene = self.gene_alias_dict[gene]
+                except Exception:
+                    newgene = gene
+                gene_vec.append(newgene)
             
-        # Writing the results to new matrix
-        output_matrix_file.write(",".join(gene_vec)+"\n")
-        for line in input_matrix_file: output_matrix_file.write(line)
-        input_matrix_file.close()
-        output_matrix_file.close()
-
+            # Writing the results to new matrix
+            output_matrix_file.write(",".join(gene_vec)+"\n")
+            for line in input_matrix_file: output_matrix_file.write(line)
+            input_matrix_file.close()
+            output_matrix_file.close()
+            
+        else:
+        
+            # Reading matrices and gene line
+            input_matrix_file = open(input_matrix_file_name, "r")
+            output_matrix_file = open(output_matrix_file_name, "w")
+            output_matrix_file.write(input_matrix_file.readline())
+            
+            # Iterating on the matrix
+            for line in input_matrix_file:
+                ll = line.strip().split(",")
+                try:
+                    newgene = self.gene_alias_dict[ll[0]]
+                except Exception:
+                    newgene = ll[0]
+                output_matrix_file.write(",".join([newgene] + ll[1:]) + "\n")
+            
+            input_matrix_file.close()
+            output_matrix_file.close()
 
 
 

@@ -212,7 +212,7 @@ class ArgumentParser():
         # Hidden Options
 
         io_input_file_is_reversed_help = None
-        self.add_option("A", "io_input_file_is_reversed", "bool", "BOOLFALSE", True, io_input_file_is_reversed_help)
+        self.add_option("A", "io_input_file_is_reversed", "bool", "BOOLFALSE", False, io_input_file_is_reversed_help)
 
         pre_remove_threshold_help = None
         self.add_option("B", "pre_remove_threshold", "float", "FLOAT", 0.0, pre_remove_threshold_help)

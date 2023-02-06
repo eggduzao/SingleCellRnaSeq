@@ -97,10 +97,10 @@ class InputOutput():
 
             # Treat gene aliases
             alias_input_file_name = os.path.join(self.temporary_location, "alias_input_file_name.csv")
-            self.gene_alias_instance.put_gene_names_in_csv_matrix(reversed_input_file_name, alias_input_file_name)
+            self.gene_alias_instance.put_gene_names_in_csv_matrix(reversed_input_file_name, alias_input_file_name, io_input_file_is_reversed)
             self.files_to_remove.append(alias_input_file_name)
     
-            return read_csv(self.input_file_name, first_column_names = True)
+            return read_csv(alias_input_file_name, first_column_names = True)
 
 
         # H5AD File

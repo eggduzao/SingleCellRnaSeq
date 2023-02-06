@@ -13,8 +13,9 @@ output_type="--output-type=csv"
 seed="--seed=123"
 
 # Hidden Options
-io_input_file_is_reversed="--io_input_file_is_reversed"
+io_input_file_is_reversed="--io-input-file-is-reversed"
 
+# 
 
-scaw $organism $input_type $cores $output_type $seed $input_matrix $temporary_location $output_location 
+scaw $organism $input_type $cores $output_type $seed $io_input_file_is_reversed $input_matrix $temporary_location $output_location 
 
