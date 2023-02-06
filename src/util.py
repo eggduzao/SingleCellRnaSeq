@@ -582,7 +582,7 @@ class AuxiliaryFunctions:
             - scanpy_fig_folder_name -- String.
             - temporary_folder_name -- String.
         """
-        command = "mv "+os.path.join(scanpy_fig_folder_name,"*"+figure_name)+" "+os.path.join(temporary_folder_name,figure_name)
+        command = "mv "+os.path.join(scanpy_fig_folder_name, "*" + figure_name)+" "+os.path.join(temporary_folder_name, figure_name)
         os.system(command)
 
 

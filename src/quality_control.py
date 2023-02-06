@@ -15,7 +15,7 @@ Authors: Eduardo G. Gusmao.
 # Python
 
 # Internal
-from src.Util import AuxiliaryFunctions
+from src.util import AuxiliaryFunctions
 
 # External
 import scanpy as sc
@@ -50,7 +50,8 @@ class QualityControl():
     
           - return -- A return.
         """
-        
+
+        # Class attributes        
         self.anndata_expression_matrix = anndata_expression_matrix
         self.temporary_folder_name = temporary_folder_name
         self.scanpy_fig_folder_name = "./figures/"
@@ -74,7 +75,7 @@ class QualityControl():
 
         # Plot highly expressed genes
         sc.pl.highest_expr_genes(self.anndata_expression_matrix, n_top = top_expressed_genes, show = False, save='_top_expressed_genes.pdf')
-        #AuxiliaryFunctions.save_to_another_folder("top_expressed_genes.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+        AuxiliaryFunctions.save_to_another_folder("top_expressed_genes.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
         # Basic filtering
         sc.pp.filter_cells(self.anndata_expression_matrix, min_genes = min_genes_per_cell)
@@ -86,15 +87,15 @@ class QualityControl():
 
         # Violin plot of statistics
         sc.pl.violin(self.anndata_expression_matrix, ['n_genes_by_counts', 'total_counts', 'pct_counts_mt'], jitter=0.4, multi_panel=True, show = False, save='_violinplot_of_statistics.pdf')
-        # TODO - Save plot to temporary folder
+        AuxiliaryFunctions.save_to_another_folder("violinplot_of_statistics.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
         # Scatter plot of total counts vs percentage of mithocondrial counts
         sc.pl.scatter(self.anndata_expression_matrix, x='total_counts', y='pct_counts_mt', show = False, save='_scatter_total_mito.pdf')
-        # TODO - Save plot to temporary folder
+        AuxiliaryFunctions.save_to_another_folder("scatter_total_mito.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
         
         # Scatter plot of total counts vs number of genes by counts
         sc.pl.scatter(self.anndata_expression_matrix, x='total_counts', y='n_genes_by_counts', show = False, save='_scatter_total_gbc.pdf')
-        # TODO - Save plot to temporary folder
+        AuxiliaryFunctions.save_to_another_folder("scatter_total_gbc.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
         # Filter by slicing the AnnData object
         self.anndata_expression_matrix = self.anndata_expression_matrix[self.anndata_expression_matrix.obs.n_genes_by_counts < max_number_of_genes_by_counts, :]

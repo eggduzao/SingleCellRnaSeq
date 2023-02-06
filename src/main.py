@@ -210,32 +210,6 @@ def main():
     ###############################################################################################
     
     
-    """   
-# Total Count Normalization
-sc.pp.normalize_total(adata, target_sum=1e4)
-
-# Normalize by log1p
-sc.pp.log1p(adata)
-
-# Identify highly variable genes
-sc.pp.highly_variable_genes(adata, min_mean=0.0125, max_mean=3, min_disp=0.5)
-
-# Plot of highly variable genes vs others
-sc.pl.highly_variable_genes(adata, show = False, save='_5.pdf')
-
-adata.raw = adata
-
-# Filter highly variable genes
-adata = adata[:, adata.var.highly_variable]
-
-# Regress out effects of total counts of genes and % mito genes
-sc.pp.regress_out(adata, ['total_counts', 'pct_counts_mt'])
-
-# Scale each gene to unit variance. Clip values exceeding standard deviation 10.
-sc.pp.scale(adata, max_value=10)
-    
-    """
-    
     # Normalization
     normalization_timestamp = time.time()
     
