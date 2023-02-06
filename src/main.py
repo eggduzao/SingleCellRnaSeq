@@ -29,6 +29,7 @@ from src.normalization import Normalization
 from src.feature_selection import FeatureSelection
 from src.dimensionality_reduction import DimensionalityReduction
 from src.clustering import Clustering
+from src.de_analysis import DEAnalysis
 
 # External
 import numpy as np
@@ -310,7 +311,11 @@ def main():
     # DE Analysis
     ###############################################################################################
     
-    # TODO
+    # Performing DE Analysis
+    de_analysis_instance = DEAnalysis(anndata_expression_matrix, temporary_location)
+
+    # Finding marker genes
+    de_analysis_instance.finding_marker_genes_workflow()
     
     # DE Analysis time
     de_analysis_timestamp = time.time()
