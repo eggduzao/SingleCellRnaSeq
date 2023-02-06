@@ -1,6 +1,6 @@
 from __future__ import print_function
 """
-Normalization Module
+Feature selection Module
 ===================
 Placeholder.
 
@@ -25,7 +25,7 @@ import scanpy as sc
 # Goba Class
 ###################################################################################################
 
-class Normalization():
+class FeatureSelection():
     """This class represents TODO.
 
     *Keyword arguments:*
@@ -57,8 +57,7 @@ class Normalization():
         self.scanpy_fig_folder_name = "./figures/"
 
 
-    def normalization_workflow(self, total_count_normalization_target = 1e4, normalization_method = "log1p", variable_genes_min_mean = 0.0125, variable_genes_max_mean = 3,
-                               variable_genes_min_disp = 0.5, clip_values_max_std = 10):
+    def feature_selection_workflow(self, list_of_genes_of_interest = [], log_variance_ratio = True):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -70,29 +69,29 @@ class Normalization():
           - return -- A return.
         """
 
+        # Select features with PCA
+        sc.tl.pca(self.anndata_expression_matrix, svd_solver = "arpack")
 
-        # Total Count Normalization
-        sc.pp.normalize_total(self.anndata_expression_matrix, target_sum = total_count_normalization_target)
+        # Make scatterplot with list of interesting genes
+        for gene in list_of_genes_of_interest:
+            try:
+                sc.pl.pca(self.anndata_expression_matrix, color = gene, show = False, save = "_PCA_expression_"+gene+".pdf")
+                AuxiliaryFunctions.save_to_another_folder("PCA_expression_"+gene+".pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+            except Exception:
+              # Error - gene not found
+              pass
 
-        # Normalize by log1p
-        if(normalization_method == "log1p"):
-            sc.pp.log1p(self.anndata_expression_matrix)
+        # Plot the variance ratio of the scatterplot
+        sc.pl.pca_variance_ratio(self.anndata_expression_matrix, log = log_variance_ratio, show = False, save="_PCA_variance_ratio.pdf")
+        AuxiliaryFunctions.save_to_another_folder("PCA_variance_ratio.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
-        # Identify highly variable genes
-        sc.pp.highly_variable_genes(self.anndata_expression_matrix, min_mean = variable_genes_min_mean, max_mean = variable_genes_max_mean, min_disp = variable_genes_min_disp)
 
-        # Plot of highly variable genes vs others
-        sc.pl.highly_variable_genes(self.anndata_expression_matrix, show = False, save='_violinplot_of_statistics.pdf')
-        AuxiliaryFunctions.save_to_another_folder("violinplot_of_statistics.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
-        # Filter highly variable genes
-        self.anndata_expression_matrix.raw = self.anndata_expression_matrix
-        self.anndata_expression_matrix = self.anndata_expression_matrix[:, self.anndata_expression_matrix.var.highly_variable]
 
-        # Regress out effects of total counts of genes and % mito genes
-        sc.pp.regress_out(self.anndata_expression_matrix, ['total_counts', 'pct_counts_mt'])
 
-        # Scale each gene to unit variance. Clip values exceeding standard deviation 10.
-        sc.pp.scale(self.anndata_expression_matrix, max_value = clip_values_max_std)
+
+
+
+
 
 

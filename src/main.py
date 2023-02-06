@@ -25,6 +25,10 @@ from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias
 from src.arguments import ArgumentParser
 from src.io import InputOutput
 from src.quality_control import QualityControl
+from src.normalization import Normalization
+from src.feature_selection import FeatureSelection
+from src.dimensionality_reduction import DimensionalityReduction
+from src.clustering import Clustering
 
 # External
 import numpy as np
@@ -209,6 +213,22 @@ def main():
     # Normalization
     ###############################################################################################
     
+    total_count_normalization_target = 1e4
+    normalization_method = "log1p"
+    variable_genes_min_mean = 0.0125
+    variable_genes_max_mean = 3
+    variable_genes_min_disp = 0.5
+    clip_values_max_std = 10
+
+
+    # Perform normalization
+    normalization_instance = Normalization(anndata_expression_matrix, temporary_location)
+    normalization_instance.normalization_workflow(total_count_normalization_target = total_count_normalization_target,
+                                                  normalization_method = normalization_method,
+                                                  variable_genes_min_mean = variable_genes_min_mean,
+                                                  variable_genes_max_mean = variable_genes_max_mean,
+                                                  variable_genes_min_disp = variable_genes_min_disp,
+                                                  clip_values_max_std = clip_values_max_std)
     
     # Normalization
     normalization_timestamp = time.time()
@@ -218,8 +238,14 @@ def main():
     # Feature Selection
     ###############################################################################################
     
-    # TODO
-    
+    list_of_genes_of_interest = ["CST3", "MAFP5"]
+    log_variance_ratio = True
+
+    # Perform feature selection
+    feature_selection_instance = FeatureSelection(anndata_expression_matrix, temporary_location)
+    feature_selection_instance.feature_selection_workflow(list_of_genes_of_interest = list_of_genes_of_interest, 
+                                                          log_variance_ratio = log_variance_ratio)
+
     # Feature selection time
     feature_selection_timestamp = time.time()
     
@@ -228,8 +254,18 @@ def main():
     # Dimensionality Reduction
     ###############################################################################################
     
-    # TODO
-    
+    number_of_neighbors = 10
+    number_of_pcs = 40
+    list_of_genes_of_interest = ["CST3", "NKG7"]
+    clustering_method = "leiden"
+
+    # Perform dimensionality reduction
+    dimensionality_reduction_instance = DimensionalityReduction(anndata_expression_matrix, temporary_location)
+    dimensionality_reduction_instance.dimensionality_reduction_workflow(number_of_neighbors = number_of_neighbors,
+                                                                        number_of_pcs = number_of_pcs,
+                                                                        list_of_genes_of_interest = list_of_genes_of_interest,
+                                                                        clustering_method = clustering_method)
+
     # Dimensionality reduction time
     dimensionality_reduction_timestamp = time.time()
     
@@ -237,9 +273,15 @@ def main():
     ###############################################################################################
     # Clustering
     ###############################################################################################
-    
-    # TODO
-    
+
+    clustering_method = "leiden"
+    list_of_genes_of_interest = ["CST3", "NKG7"]    
+
+    # Perform clustering
+    clustering_instance = Clustering(anndata_expression_matrix, temporary_location)
+    clustering_instance.clustering_workflow(clustering_method = clustering_method, 
+                                            list_of_genes_of_interest = list_of_genes_of_interest)
+
     # Clustering time
     clustering_timestamp = time.time()
     
