@@ -47,6 +47,7 @@ import seaborn as se
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+
 ###################################################################################################
 # Tool Execution
 ###################################################################################################
@@ -174,7 +175,7 @@ def main():
     # Alignment preprocessing time
     alignment_preprocessing_timestamp = time.time()  
     
-    
+
     ###############################################################################################
     # Raw Data Preprocessing
     ###############################################################################################
@@ -187,7 +188,7 @@ def main():
     ###############################################################################################
     # Quality Control
     ###############################################################################################
-    
+
     top_expressed_genes = 20
     min_genes_per_cell = 200
     min_cells_per_gene = 3
@@ -231,12 +232,13 @@ def main():
     # Normalization
     normalization_timestamp = time.time()
     
-    
+
     ###############################################################################################
     # Feature Selection
     ###############################################################################################
     
-    list_of_genes_of_interest = ["MFAP5", "MAFP5"]
+    #list_of_genes_of_interest = ["MFAP5", "MAFP5"]
+    list_of_genes_of_interest = ["SAT1", "FTL"]
     log_variance_ratio = True
 
     # Perform feature selection
@@ -254,7 +256,8 @@ def main():
     
     number_of_neighbors = 10
     number_of_pcs = 40
-    list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
+    #list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
+    list_of_genes_of_interest = ["SAT1", "FTL"]
     clustering_method = "leiden"
 
     # Perform dimensionality reduction
@@ -267,13 +270,14 @@ def main():
     # Dimensionality reduction time
     dimensionality_reduction_timestamp = time.time()
     
-    
+
     ###############################################################################################
     # Clustering
     ###############################################################################################
 
     clustering_method = "leiden"
-    list_of_genes_of_interest = ["MFAP5", "SPARCL1"]    
+    #list_of_genes_of_interest = ["MFAP5", "SPARCL1"] 
+    list_of_genes_of_interest = ["SAT1", "FTL"]    
 
     # Perform clustering
     clustering_instance = Clustering(anndata_expression_matrix, temporary_location)
@@ -293,7 +297,7 @@ def main():
     # Annotation time
     annotation_timestamp = time.time()
     
-    
+
     ###############################################################################################
     # Data Integration
     ###############################################################################################
@@ -313,7 +317,8 @@ def main():
     number_of_genes_to_plot = 25
     top_genes_for_table = 10
     groups_of_interest = ["0", "5"]
-    list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
+    #list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
+    list_of_genes_of_interest = ["SAT1", "FTL"]
     
     # Performing DE Analysis
     de_analysis_instance = DEAnalysis(anndata_expression_matrix, temporary_location)
@@ -349,7 +354,7 @@ def main():
     # GSEA analysis time
     gsea_analysis_timestamp = time.time()
     
-    
+
     ###############################################################################################
     # Pseudotemporal Ordering
     ###############################################################################################
@@ -378,11 +383,43 @@ def main():
     
     # Lineage tracing time
     lineage_tracing_timestamp = time.time()
+
+
+    ###############################################################################################
+    # Create Report
+    ###############################################################################################
+
+    latex_instance = Latex(temporary_location, output_location)
+    latex_instance.create_first_page()
+    latex_instance.create_alignment_report()
+    latex_instance.create_raw_data_preprocessing_report()
+    latex_instance.create_quality_control_report()
+    latex_instance.create_normalization_report()
+    latex_instance.create_feature_selection_report()
+    latex_instance.create_dimensionality_reduction_report()
+    latex_instance.create_clustering_report()
+    latex_instance.create_annotation_report()
+    latex_instance.create_data_integration_report()
+    latex_instance.create_de_analysis_report()
+    latex_instance.create_compositional_analysis_report()
+    latex_instance.create_gsea_analysis_report()
+    latex_instance.create_pseudotemporal_ordering_report()
+    latex_instance.create_rna_velocity_report()
+    latex_instance.create_lineage_tracing_report()
+    latex_instance.create_bibliography()
     
     
     ###############################################################################################
-    # Placeholder
+    # Deleting objects
     ###############################################################################################
+    
+    # Files to remove
+    for filename in files_to_remove:
+        command = "rm -rf " + filename
+        os.system(command)
+    
+    
+    
     
     
    

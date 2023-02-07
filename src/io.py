@@ -19,7 +19,7 @@ import random
 # Internal
 
 # External
-from scanpy import read_csv, read_h5ad
+from scanpy import read_csv, read_h5ad, read_10x_mtx
 import pandas as pd
 
 
@@ -102,6 +102,11 @@ class InputOutput():
     
             return read_csv(alias_input_file_name, first_column_names = True)
 
+
+        # Cell Ranger File
+        elif(self.input_file_type == "cellranger"):
+        
+            return read_10x_mtx(self.input_file_name, var_names = "gene_symbols", make_unique = True)
 
         # H5AD File
         elif(self.input_file_type == "h5ad"):
