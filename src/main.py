@@ -108,8 +108,6 @@ def main():
     # Hidden Options
     io_input_file_is_reversed = opts.io_input_file_is_reversed
     
-    print(io_input_file_is_reversed)
-    
     #pre_min_contig_removed_bins = opts.pre_min_contig_removed_bins # TOREMOVE
     #pre_remove_threshold = opts.pre_remove_threshold # TOREMOVE
     #sica_pvalue_threshold = opts.sica_pvalue_threshold # TOREMOVE
@@ -138,7 +136,6 @@ def main():
     anndata_expression_matrix = inputoutput_instance.read(io_input_file_is_reversed = io_input_file_is_reversed)
     
     print(anndata_expression_matrix)
-    print(anndata_expression_matrix.var[:10])
     
     ###############################################################################################
     # Tool's Versions
@@ -239,7 +236,7 @@ def main():
     # Feature Selection
     ###############################################################################################
     
-    list_of_genes_of_interest = ["CST3", "MAFP5"]
+    list_of_genes_of_interest = ["MFAP5", "MAFP5"]
     log_variance_ratio = True
 
     # Perform feature selection
@@ -257,7 +254,7 @@ def main():
     
     number_of_neighbors = 10
     number_of_pcs = 40
-    list_of_genes_of_interest = ["CST3", "NKG7"]
+    list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
     clustering_method = "leiden"
 
     # Perform dimensionality reduction
@@ -276,7 +273,7 @@ def main():
     ###############################################################################################
 
     clustering_method = "leiden"
-    list_of_genes_of_interest = ["CST3", "NKG7"]    
+    list_of_genes_of_interest = ["MFAP5", "SPARCL1"]    
 
     # Perform clustering
     clustering_instance = Clustering(anndata_expression_matrix, temporary_location)
