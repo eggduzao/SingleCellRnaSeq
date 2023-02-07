@@ -308,14 +308,23 @@ def main():
     # DE Analysis
     ###############################################################################################
     
+    clustering_method = "leiden"
+    statistical_method = "wilcox"
+    number_of_genes_to_plot = 25
+    top_genes_for_table = 10
+    groups_of_interest = ["0", "5"]
+    list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
+    
     # Performing DE Analysis
     de_analysis_instance = DEAnalysis(anndata_expression_matrix, temporary_location)
 
     # Finding marker genes
-    de_analysis_instance.finding_marker_genes_workflow(clustering_method = "leiden",
-                                                       statistical_method = "wilcox",
-                                                       number_of_genes_to_plot = 25,
-                                                       top_genes_for_table = 10)
+    de_analysis_instance.finding_marker_genes_workflow(clustering_method = clustering_method,
+                                                       statistical_method = statistical_method,
+                                                       number_of_genes_to_plot = number_of_genes_to_plot,
+                                                       top_genes_for_table = top_genes_for_table,
+                                                       groups_of_interest = groups_of_interest,
+                                                       list_of_genes_of_interest = list_of_genes_of_interest)
     
     # DE Analysis time
     de_analysis_timestamp = time.time()

@@ -59,7 +59,7 @@ class DEAnalysis():
 
 
     def finding_marker_genes_workflow(self, clustering_method = "leiden", statistical_method = "wilcox", number_of_genes_to_plot = 25,
-                                      top_genes_for_table = 10):
+                                      top_genes_for_table = 10, groups_of_interest = [], list_of_genes_of_interest = []):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -99,18 +99,19 @@ class DEAnalysis():
         groups = result['names'].dtype.names
         top_marker_genes_table_with_scores = pd.DataFrame(
             {group + '_' + key[:1]: result[key][group]
-            for group in groups for key in ['names', 'pvals']}).head(top_genes_for_table)
+            for group in groups for key in ['names', 'logfoldchanges', 'pvals_adj']}).head(top_genes_for_table)
         top_marker_genes_table_with_scores.to_csv(os.path.join(self.temporary_folder_name, "top_marker_genes_table_pvalue.csv"))
-        
-        
+         
+        # Violin plot for cluster vs rest
+        for group in groups_of_interest:
+            sc.pl.rank_genes_groups_violin(self.anndata_expression_matrix, groups = group, n_genes = top_genes_for_table, show = False, save = "_violinplot_expressiongroup_"+str(group)+".pdf")
+            AuxiliaryFunctions.save_to_another_folder("violinplot_expressiongroup_"+str(group)+".pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+
+        # Violin plot of list of genes by cluster
+        sc.pl.violin(self.anndata_expression_matrix, list_of_genes_of_interest, groupby = clustering_method, show = False, save = "_violinplot_geneexpby_cluster.pdf")
+        AuxiliaryFunctions.save_to_another_folder("violinplot_geneexpby_cluster.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
         """
-# Violin plot for cluster vs rest
-sc.pl.rank_genes_groups_violin(self.anndata_expression_matrix, groups='0', n_genes=8)
-
-# Violin plot of list of genes by cluster
-sc.pl.violin(self.anndata_expression_matrix, ['CST3', 'NKG7', 'PPBP'], groupby='leiden')
-
 # Compare to each of the single clusters
 #sc.tl.rank_genes_groups(self.anndata_expression_matrix, 'leiden', groups=['0'], reference='1', method='wilcoxon')
 #sc.pl.rank_genes_groups(self.anndata_expression_matrix, groups=['0'], n_genes=20)
