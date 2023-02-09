@@ -238,6 +238,13 @@ data_config_file.write("command: java\n")
 data_config_file.write("options: -Djava.awt.headless=true -Xmx32000m -jar\n")
 data_config_file.write("jar: bin/juicer_tools_1.22.01.jar\n\n")
 
+session = "Report"
+data_config_file.write("[" + session + "]\n")
+data_config_file.write("texsettingsandmaterials: report/texsettingsandmaterials\n")
+data_config_file.write("reportstylebasic: report/reportstylebasic.sty\n")
+data_config_file.write("reportstylefull: report/reportstylefull.sty\n")
+data_config_file.write("executable: report/run.sh\n\n")
+
 
 data_config_file.close()
 

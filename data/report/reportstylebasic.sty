@@ -1,0 +1,45 @@
+\usepackage{titlesec} 
+\usepackage{tikz}
+%\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage[left=3cm,right=2.5cm,top=2.5cm,bottom=2cm]{geometry}
+\usepackage{fancyhdr}
+
+%------------------Main Font-------------------------
+%\setmainfont{Fira Sans}
+%\setmainfont{Arial}
+%Make sure you have the compiler "XeLaTeX" activated on your settings for your LaTeX document in order to see the font 
+
+%------------------Color Set--------------------------
+\definecolor{LightBlue}{RGB}{66, 163, 251}
+\definecolor{DarkBlue}{RGB}{36, 100, 176}
+\definecolor{LightGray}{gray}{.94}
+\definecolor{DarkGray}{gray}{.172}
+\definecolor{Orange}{RGB}{229, 133, 3}
+\definecolor{MediumBlue}{RGB}{38, 119, 193}
+
+%------------------Section Default Setting-------------
+\titleformat*{\section}{\color{DarkBlue}\normalfont\bfseries\Huge}
+\titleformat*{\subsection}{\color{LightBlue}\normalfont\bfseries\LARGE}
+\titleformat*{\subsubsection}{\color{MediumBlue}\normalfont\bfseries\LARGE}
+
+%-------------------Section Numbers Removal------------
+\setcounter{secnumdepth}{0}
+
+
+%-------------------------Header & Footer------------------------
+
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyhead[L]{
+%\begin{tikzpicture}[remember picture,overlay] \node[anchor=north west, yshift=1.5mm, xshift=-1.5mm] at (current page.north west) {\includegraphics[height=25mm]{figures/header_corner.png}};
+%\end{tikzpicture}
+%}
+\fancyfoot[R]{ %page number on the rigth bottom
+\begin{tikzpicture}[remember picture,overlay] \node[anchor=south east, yshift=-1.5mm, xshift=1.5mm] at (current page.south east) {\includegraphics[height=13mm]{texsettingsandmaterials/figures/mbc_footer.png}};
+\end{tikzpicture}
+%\textcolor{LightGray}{\thepage}
+\textcolor{white}{\thepage} %page number on white color
+}
+\setlength{\footskip}{42pt}%{39pt} %height of the page number
+

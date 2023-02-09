@@ -220,6 +220,75 @@ class GeneAlias(ConfigurationFile):
             output_matrix_file.close()
 
 
+class ReportConfiguration(ConfigurationFile):
+    """This class represents TODO.
+
+    *Keyword arguments:*
+
+      - argument1 -- Short description. This argument represents a long description. It can be:
+        - Possibility 1: A possibility 1.
+        - Possibility 2: A possibility 2.
+  
+      - argument2 -- Short description. This argument represents a long description. It can be:
+        - Possibility 1: A possibility 1.
+        - Possibility 2: A possibility 2.
+    """
+
+    def __init__(self):
+        """Returns TODO.
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+
+        # Configuration file initialization
+        ConfigurationFile.__init__(self)
+        
+        # LaTeX files
+        self.tex_folder = os.path.join(self.scaw_data_path, self.config.get("Report", "texsettingsandmaterials"))
+        self.reportstylebasic_file_name = os.path.join(self.scaw_data_path, self.config.get("Report", "reportstylebasic"))
+        self.reportstylefull_file_name = os.path.join(self.scaw_data_path, self.config.get("Report", "reportstylefull"))
+        self.executable_file_name = os.path.join(self.scaw_data_path, self.config.get("Report", "executable"))
+
+    # Move LaTeX files to output_report_location
+    def move_latex_files(self, output_report_location):
+        """Returns TODO.
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+        for file_name in [self.tex_folder, self.reportstylebasic_file_name, self.reportstylefull_file_name, self.executable_file_name]:
+            command = "mv " + file_name + " " + output_report_location
+            os.system(command)
+
+    # Run report
+    def run_report(self, output_report_location):
+        """Returns TODO.
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+        
+        exec_file_name = self.executable_file_name.split("/")[-1]
+        current_working_directory = os.getcwd()
+        
+        command = "cd " + output_report_location + "; ./" + exec_file_name + "; cd " + current_working_directory
+        os.system(command)        
 
 class JuicerCommand(ConfigurationFile):
     """This class represents TODO.

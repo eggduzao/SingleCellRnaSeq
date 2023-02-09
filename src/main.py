@@ -21,7 +21,7 @@ import random
 
 # Internal
 from src.__version__ import __version__
-from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias
+from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias, ReportConfiguration
 from src.arguments import ArgumentParser
 from src.io import InputOutput
 from src.quality_control import QualityControl
@@ -30,6 +30,7 @@ from src.feature_selection import FeatureSelection
 from src.dimensionality_reduction import DimensionalityReduction
 from src.clustering import Clustering
 from src.de_analysis import DEAnalysis
+from src.latex import Latex
 
 # External
 import numpy as np
@@ -122,6 +123,7 @@ def main():
     gene_alias = GeneAlias(organism)
     juicer_command = JuicerCommand() # TOREMOVE
     cooler_command = CoolerCommand() # TOREMOVE
+    report_configuration = ReportConfiguration()
     
     ###############################################################################################
     # Input
@@ -150,11 +152,11 @@ def main():
     
     # Python packages versions
     numpy_version = np.__version__
+    scipy_version = si.__version__
     pandas_version = pd.__version__
     scanpy_version = sc.__version__
     anndata_version = an.__version__
     umap_version = um.__version__
-    scipy_version = si.__version__
     sklearn_version = sk.__version__
     statsmodels_version = st.__version__
     igraph_version = ig.__version__
@@ -165,6 +167,13 @@ def main():
     
     # Further tool's versions
     # TODO
+    
+    # Dictionary of versions
+    tool_version_dictionary = {"Python": python_version, "SCAW": tool_version,
+                               "Numpy": numpy_version, "Scipy": scipy_version, "Pandas": pandas_version, "Scanpy": scanpy_version,
+                               "AnnData": anndata_version, "UMAP": umap_version, "Scikit-Learn": sklearn_version, "Statsmodel": statsmodels_version,
+                               "IGraph": igraph_version, "Louvain": louvain_version, "PyNNDescent": pynndescent_version, "Seaborn": seaborn_version,
+                               "Matplotlib": matplotlib_version}
     
     ###############################################################################################
     # Alignment
@@ -389,7 +398,13 @@ def main():
     # Create Report
     ###############################################################################################
 
-    latex_instance = Latex(temporary_location, output_location)
+    # Report variables
+    output_report_location = os.path.join(output_location, "report")
+    report_configuration.move_latex_files(output_report_location)
+    
+    # LaTeX report
+    latex_instance = Latex(temporary_location, output_report_location)
+    latex_instance.open_report()
     latex_instance.create_first_page()
     latex_instance.create_alignment_report()
     latex_instance.create_raw_data_preprocessing_report()
@@ -407,7 +422,10 @@ def main():
     latex_instance.create_rna_velocity_report()
     latex_instance.create_lineage_tracing_report()
     latex_instance.create_bibliography()
+    latex_instance.close_report()
     
+    # Running LaTeX report
+    report_configuration.run_report(output_report_location)
     
     ###############################################################################################
     # Deleting objects
