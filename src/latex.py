@@ -141,6 +141,38 @@ class Latex():
         self.report_file_name.write("\\clearpage\n\n")
 
 
+    def create_tools_versions_report(self, tool_version_dictionary):
+        """Returns TODO.
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+        
+        # Starting session
+        self.report_file_name.write("\\section{Tool's Versions}\n\n")
+
+        # Starting table
+        self.report_file_name.write("\\begin{table}[htb]\n")
+        self.report_file_name.write("\\centering\n")
+        self.report_file_name.write("\\textcolor{black}{\\textbf{\\caption{Version of the tools and packages used.}}}\label{tab:tool.versions}\n")
+        self.report_file_name.write("\\begin{tabular}{|l|l|}\n")
+        self.report_file_name.write("\\hline\n")
+        
+        # Iterating through values
+        self.report_file_name.write("\\textbf{Tool} & \\textbf{Version} \\\\ \\hline\n")
+        for key, value in tool_version_dictionary.items():
+            self.report_file_name.write(str(key) + " & " + str(value) + " \\\\ \\hline\n")
+            
+        # Ending Table
+        self.report_file_name.write("\\end{tabular}\n")
+        self.report_file_name.write("\\end{table}\n\n")
+        
+        self.report_file_name.write("\\clearpage\n\n")
 
     def create_alignment_report(self):
         """Returns TODO.

@@ -406,6 +406,7 @@ def main():
     latex_instance = Latex(temporary_location, output_report_location)
     latex_instance.open_report()
     latex_instance.create_first_page()
+    latex_instance.create_tools_versions_report(tool_version_dictionary)
     latex_instance.create_alignment_report()
     latex_instance.create_raw_data_preprocessing_report()
     latex_instance.create_quality_control_report()
