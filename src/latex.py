@@ -82,6 +82,26 @@ class Latex():
         """
         self.report_file_name.close()
 
+
+    def add_figure(self, figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1): 
+        """Returns TODO.
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+
+        self.report_file_name.write("\\begin{figure}["+position+"]\n")
+        self.report_file_name.write("\\centering\n")
+        self.report_file_name.write("\\includegraphics[width=" + str(text_width) + "\\textwidth]{" + figure_file_name + "}\n")
+        self.report_file_name.write("\\centering\n")
+        self.report_file_name.write("\\textcolor{black}{\\textbf{\\caption{" + figure_caption + "}}}\\label{" + figure_label + "}\n")
+        self.report_file_name.write("\\end{figure}\n\n")
+
     def create_first_page(self):
         """Returns TODO.
     
@@ -160,13 +180,13 @@ class Latex():
         self.report_file_name.write("\\begin{table}[htb]\n")
         self.report_file_name.write("\\centering\n")
         self.report_file_name.write("\\textcolor{black}{\\textbf{\\caption{Version of the tools and packages used.}}}\label{tab:tool.versions}\n")
-        self.report_file_name.write("\\begin{tabular}{|l|l|}\n")
+        self.report_file_name.write("\\begin{tabular}{|l|l|l|}\n")
         self.report_file_name.write("\\hline\n")
         
         # Iterating through values
-        self.report_file_name.write("\\textbf{Tool} & \\textbf{Version} \\\\ \\hline\n")
+        self.report_file_name.write("\\textbf{Tool} & \\textbf{Version} & \\textbf{Citation} \\\\ \\hline\n")
         for key, value in tool_version_dictionary.items():
-            self.report_file_name.write(str(key) + " & " + str(value) + " \\\\ \\hline\n")
+            self.report_file_name.write(str(key) + " & " + str(value[0]) + " & " + str(value[1]) + " \\\\ \\hline\n")
             
         # Ending Table
         self.report_file_name.write("\\end{tabular}\n")
@@ -188,11 +208,11 @@ class Latex():
         
         self.report_file_name.write("\\section{Samples}\n\n")
         
-        self.report_file_name.write("Some Text Here~\\cite{Ewels:2016aa}\n\n")
+        self.report_file_name.write("Some Text Here\n\n")
         
         self.report_file_name.write("\\subsubsection*{Result files}\n\n")
         
-        self.report_file_name.write("Some more text here~\\cite{R2018}\n\n")
+        self.report_file_name.write("Some more text here\n\n")
         
         self.report_file_name.write("\\clearpage\n\n")
             
@@ -208,7 +228,16 @@ class Latex():
     
           - return -- A return.
         """
-        pass
+
+        self.report_file_name.write("\\section{Samples}\n\n")
+        
+        self.report_file_name.write("Some Text Here\n\n")
+        
+        self.report_file_name.write("\\subsubsection*{Result files}\n\n")
+        
+        self.report_file_name.write("Some more text here\n\n")
+        
+        self.report_file_name.write("\\clearpage\n\n")
 
     def create_quality_control_report(self):
         """Returns TODO.
@@ -221,7 +250,36 @@ class Latex():
     
           - return -- A return.
         """
-        pass
+        
+        self.report_file_name.write("\\section{Quality Control}\n\n")
+        
+        # Figure - Top expressed genes before normalization
+        figure_file_name = os.path.join(self.temporary_location, "top_expressed_genes.pdf")
+        figure_caption = "Placeholder"
+        figure_label = "top.expressed.genes"
+        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.8)
+        
+        # Figure - Violin plot of statistics
+        figure_file_name = os.path.join(self.temporary_location, "violinplot_of_statistics.pdf")
+        figure_caption = "Placeholder"
+        figure_label = "violinplot.of.statistics"
+        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
+        
+        # Figure - Scatterplot of total counts vs mitochondrial counts
+        figure_file_name = os.path.join(self.temporary_location, "scatter_total_mito.pdf")
+        figure_caption = "Placeholder"
+        figure_label = "scatter.total.mito"
+        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
+        
+        # Figure - Scatterplot of total counts vs total genes by counts
+        figure_file_name = os.path.join(self.temporary_location, "scatter_total_gbc.pdf")
+        figure_caption = "Placeholder"
+        figure_label = "scatter.total.gbc"
+        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
+        
+        
+        self.report_file_name.write("\\clearpage\n\n")
+
 
     def create_normalization_report(self):
         """Returns TODO.
@@ -234,7 +292,17 @@ class Latex():
     
           - return -- A return.
         """
-        pass
+        
+        self.report_file_name.write("\\section{Normalization}\n\n")
+        
+        # Figure - Top expressed genes before normalization
+        figure_file_name = os.path.join(self.temporary_location, "normalized_variable_genes.pdf")
+        figure_caption = "Placeholder"
+        figure_label = "normalized.variable.genes"
+        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
+        
+        self.report_file_name.write("\\clearpage\n\n")
+        
 
     def create_feature_selection_report(self):
         """Returns TODO.
@@ -247,7 +315,12 @@ class Latex():
     
           - return -- A return.
         """
-        pass
+        
+        self.report_file_name.write("\\section{Feature Selection}\n\n")
+        
+        self.report_file_name.write("Placeholder.\n\n")
+        
+        self.report_file_name.write("\\clearpage\n\n")
 
 
     def create_dimensionality_reduction_report(self):
@@ -261,7 +334,13 @@ class Latex():
     
           - return -- A return.
         """
-        pass
+
+        self.report_file_name.write("\\section{Dimensionality Reduction}\n\n")
+        
+        self.report_file_name.write("Placeholder.\n\n")
+        
+        self.report_file_name.write("\\clearpage\n\n")
+        
 
     def create_clustering_report(self):
         """Returns TODO.
@@ -274,7 +353,13 @@ class Latex():
     
           - return -- A return.
         """
-        pass
+
+        self.report_file_name.write("\\section{Clustering}\n\n")
+        
+        self.report_file_name.write("Placeholder.\n\n")
+        
+        self.report_file_name.write("\\clearpage\n\n")
+        
 
     def create_annotation_report(self):
         """Returns TODO.

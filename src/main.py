@@ -139,6 +139,8 @@ def main():
     anndata_expression_matrix = inputoutput_instance.read(io_input_file_is_reversed = io_input_file_is_reversed)
     
     print(anndata_expression_matrix)
+    print(len(anndata_expression_matrix.obs)) # Number of cells
+    print(len(anndata_expression_matrix.var)) # Number of genes
     
     ###############################################################################################
     # Tool's Versions
@@ -169,11 +171,21 @@ def main():
     # TODO
     
     # Dictionary of versions
-    tool_version_dictionary = {"Python": python_version, "SCAW": tool_version,
-                               "Numpy": numpy_version, "Scipy": scipy_version, "Pandas": pandas_version, "Scanpy": scanpy_version,
-                               "AnnData": anndata_version, "UMAP": umap_version, "Scikit-Learn": sklearn_version, "Statsmodel": statsmodels_version,
-                               "IGraph": igraph_version, "Louvain": louvain_version, "PyNNDescent": pynndescent_version, "Seaborn": seaborn_version,
-                               "Matplotlib": matplotlib_version}
+    tool_version_dictionary = {"Python": [python_version, "~\\cite{van1995python}"], 
+                               "SCAW": [tool_version, "~"],
+                               "Numpy": [numpy_version, "~\\cite{harris2020numpy}"],
+                               "Scipy": [scipy_version, "~\\cite{virtanen2020scipy}"],
+                               "Pandas": [pandas_version, "~\\cite{mckinney2010pandas}"],
+                               "Scanpy": [scanpy_version, "~\\cite{wolf2018scanpy}"],
+                               "AnnData": [anndata_version, "~\\cite{virshup2021anndata}"],
+                               "UMAP": [umap_version, "~\\cite{mcinnes2018umap}"],
+                               "Scikit-Learn": [sklearn_version, "~\\cite{pedregosa2011sklearn}"],
+                               "Statsmodel": [statsmodels_version, "~\\cite{seabold2010statsmodels}"],
+                               "IGraph": [igraph_version, "~\\cite{csardi2006igraph}"],
+                               "Louvain": [louvain_version, "~\\cite{aynaud2020louvain}"],
+                               "PyNNDescent": [pynndescent_version, "~\\cite{wei2006PyNNDescent}"], 
+                               "Seaborn": [seaborn_version, "~\\cite{waskom2021seaborn}"],
+                               "Matplotlib": [matplotlib_version, "~\\cite{hunter2007matplotlib}"]}
     
     ###############################################################################################
     # Alignment

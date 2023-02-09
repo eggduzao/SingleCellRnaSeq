@@ -82,8 +82,8 @@ class Normalization():
         sc.pp.highly_variable_genes(self.anndata_expression_matrix, min_mean = variable_genes_min_mean, max_mean = variable_genes_max_mean, min_disp = variable_genes_min_disp)
 
         # Plot of highly variable genes vs others
-        sc.pl.highly_variable_genes(self.anndata_expression_matrix, show = False, save='_violinplot_of_statistics.pdf')
-        AuxiliaryFunctions.save_to_another_folder("violinplot_of_statistics.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+        sc.pl.highly_variable_genes(self.anndata_expression_matrix, show = False, save='_normalized_variable_genes.pdf')
+        AuxiliaryFunctions.save_to_another_folder("normalized_variable_genes.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
 
         # Filter highly variable genes
         self.anndata_expression_matrix.raw = self.anndata_expression_matrix
