@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Arguments
-#input_matrix="--input_matrix=/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/"
-#temporary_location="--temporary_location=/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/temp/"
-#output_location="--output_location=/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/output/"
+input_matrix="--input_matrix=/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/"
+temporary_location="--temporary_location=/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/temp/"
+output_location="--output_location=/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/output/"
 
-input_matrix="--input_matrix=/Users/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/"
-temporary_location="--temporary_location=/Users/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/temp/"
-output_location="--output_location=/Users/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/output/"
+#input_matrix="--input_matrix=/Users/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/"
+#temporary_location="--temporary_location=/Users/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/temp/"
+#output_location="--output_location=/Users/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/output/"
 
 # Options
 organism="--organism=hg38"
@@ -24,4 +24,4 @@ io_input_file_is_reversed="--io-input-file-is-reversed" # $io_input_file_is_reve
 
 scaw $organism $input_type $cores $output_type $seed $input_matrix $temporary_location $output_location 
 
-
+# 25s
