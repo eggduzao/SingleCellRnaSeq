@@ -449,6 +449,9 @@ def main():
         command = "rm -rf " + filename
         os.system(command)
     
+
+    print("Completed in :" + str(lineage_tracing_timestamp - alignment_preprocessing_timestamp) + "s")
+
     
     
     

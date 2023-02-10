@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Arguments
-input_matrix="--input_matrix=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717152_CD45N-L1.csv"
-temporary_location="--temporary_location=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/temp/"
-output_location="--output_location=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/output/"
+#input_matrix="--input_matrix=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717152_CD45N-L1.csv"
+#temporary_location="--temporary_location=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/temp/"
+#output_location="--output_location=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/output/"
 
-#input_matrix="--input_matrix=/Users/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717152_CD45N-L1.csv"
-#temporary_location="--temporary_location=/Users/egg/Projects/SingleCellRnaSeq/test/1_WAT/temp/"
-#output_location="--output_location=/Users/egg/Projects/SingleCellRnaSeq/test/1_WAT/output/"
+input_matrix="--input_matrix=/Users/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717152_CD45N-L1.csv"
+temporary_location="--temporary_location=/Users/egg/Projects/SingleCellRnaSeq/test/1_WAT/temp/"
+output_location="--output_location=/Users/egg/Projects/SingleCellRnaSeq/test/1_WAT/output/"
 
 # Options
 organism="--organism=hg38"
