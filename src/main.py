@@ -2,7 +2,7 @@ from __future__ import print_function
 """
 Main Module
 ===================
-Placeholder.
+The main module which will call all the functions of the workflow in order.
 
 Authors: Eduardo G. Gusmao.
 
@@ -18,6 +18,7 @@ import sys
 import time
 import warnings
 import random
+from collections import OrderedDict
 
 # Internal
 from src.__version__ import __version__
@@ -54,7 +55,7 @@ import matplotlib.pyplot as plt
 ###################################################################################################
 
 def main():
-    """Entry point to the execution of Bloom.
+    """Entry point to the execution of SCAW.
     
     *Keyword arguments:*
     
@@ -171,21 +172,23 @@ def main():
     # TODO
     
     # Dictionary of versions
-    tool_version_dictionary = {"Python": [python_version, "~\\cite{van1995python}"], 
-                               "SCAW": [tool_version, "~"],
-                               "Numpy": [numpy_version, "~\\cite{harris2020numpy}"],
-                               "Scipy": [scipy_version, "~\\cite{virtanen2020scipy}"],
-                               "Pandas": [pandas_version, "~\\cite{mckinney2010pandas}"],
-                               "Scanpy": [scanpy_version, "~\\cite{wolf2018scanpy}"],
-                               "AnnData": [anndata_version, "~\\cite{virshup2021anndata}"],
-                               "UMAP": [umap_version, "~\\cite{mcinnes2018umap}"],
-                               "Scikit-Learn": [sklearn_version, "~\\cite{pedregosa2011sklearn}"],
-                               "Statsmodel": [statsmodels_version, "~\\cite{seabold2010statsmodels}"],
-                               "IGraph": [igraph_version, "~\\cite{csardi2006igraph}"],
-                               "Louvain": [louvain_version, "~\\cite{aynaud2020louvain}"],
-                               "PyNNDescent": [pynndescent_version, "~\\cite{wei2006PyNNDescent}"], 
-                               "Seaborn": [seaborn_version, "~\\cite{waskom2021seaborn}"],
-                               "Matplotlib": [matplotlib_version, "~\\cite{hunter2007matplotlib}"]}
+    tool_version_dictionary = OrderedDict()
+    tool_version_dictionary["Python"] = [python_version, "~\\cite{van1995python}"]
+    tool_version_dictionary["SCAW"] = [tool_version, "~"]
+    tool_version_dictionary["Numpy"] = [numpy_version, "~\\cite{harris2020numpy}"]
+    tool_version_dictionary["Scipy"] = [scipy_version, "~\\cite{virtanen2020scipy}"]
+    tool_version_dictionary["Pandas"] = [pandas_version, "~\\cite{mckinney2010pandas}"]
+    tool_version_dictionary["Scanpy"] = [scanpy_version, "~\\cite{wolf2018scanpy}"]
+    tool_version_dictionary["AnnData"] = [anndata_version, "~\\cite{virshup2021anndata}"]
+    tool_version_dictionary["UMAP"] = [umap_version, "~\\cite{mcinnes2018umap}"]
+    tool_version_dictionary["Scikit-Learn"] = [sklearn_version, "~\\cite{pedregosa2011sklearn}"]
+    tool_version_dictionary["Statsmodel"] = [statsmodels_version, "~\\cite{seabold2010statsmodels}"]
+    tool_version_dictionary["IGraph"] = [igraph_version, "~\\cite{csardi2006igraph}"]
+    tool_version_dictionary["Louvain"] = [louvain_version, "~\\cite{aynaud2020louvain}"]
+    tool_version_dictionary["PyNNDescent"] = [pynndescent_version, "~\\cite{wei2006PyNNDescent}"]
+    tool_version_dictionary["Seaborn"] = [seaborn_version, "~\\cite{waskom2021seaborn}"]
+    tool_version_dictionary["Matplotlib"] = [matplotlib_version, "~\\cite{hunter2007matplotlib}"]
+
     
     ###############################################################################################
     # Alignment
@@ -210,19 +213,19 @@ def main():
     # Quality Control
     ###############################################################################################
 
-    top_expressed_genes = 20
-    min_genes_per_cell = 200
-    min_cells_per_gene = 3
-    max_number_of_genes_by_counts = 2500
-    max_percentage_mithocondrial_counts = 5
+    qc_top_expressed_genes = 20
+    qc_min_genes_per_cell = 200
+    qc_min_cells_per_gene = 3
+    qc_max_number_of_genes_by_counts = 2500
+    qc_max_percentage_mithocondrial_counts = 5
     
     # Perform quality control
     quality_control_instance = QualityControl(anndata_expression_matrix, temporary_location)
-    quality_control_instance.quality_control_workflow(top_expressed_genes = top_expressed_genes,
-                                                      min_genes_per_cell = min_genes_per_cell,
-                                                      min_cells_per_gene = min_cells_per_gene,
-                                                      max_number_of_genes_by_counts = max_number_of_genes_by_counts,
-                                                      max_percentage_mithocondrial_counts = max_percentage_mithocondrial_counts)
+    quality_control_instance.quality_control_workflow(top_expressed_genes = qc_top_expressed_genes,
+                                                      min_genes_per_cell = qc_min_genes_per_cell,
+                                                      min_cells_per_gene = qc_min_cells_per_gene,
+                                                      max_number_of_genes_by_counts = qc_max_number_of_genes_by_counts,
+                                                      max_percentage_mithocondrial_counts = qc_max_percentage_mithocondrial_counts)
     
     
     # Quality control time
@@ -233,22 +236,22 @@ def main():
     # Normalization
     ###############################################################################################
     
-    total_count_normalization_target = 1e4
-    normalization_method = "log1p"
-    variable_genes_min_mean = 0.0125
-    variable_genes_max_mean = 3
-    variable_genes_min_disp = 0.5
-    clip_values_max_std = 10
+    nm_total_count_normalization_target = 1e4
+    nm_normalization_method = "log1p"
+    nm_variable_genes_min_mean = 0.0125
+    nm_variable_genes_max_mean = 3
+    nm_variable_genes_min_disp = 0.5
+    nm_clip_values_max_std = 10
 
 
     # Perform normalization
     normalization_instance = Normalization(anndata_expression_matrix, temporary_location)
-    normalization_instance.normalization_workflow(total_count_normalization_target = total_count_normalization_target,
-                                                  normalization_method = normalization_method,
-                                                  variable_genes_min_mean = variable_genes_min_mean,
-                                                  variable_genes_max_mean = variable_genes_max_mean,
-                                                  variable_genes_min_disp = variable_genes_min_disp,
-                                                  clip_values_max_std = clip_values_max_std)
+    normalization_instance.normalization_workflow(total_count_normalization_target = nm_total_count_normalization_target,
+                                                  normalization_method = nm_normalization_method,
+                                                  variable_genes_min_mean = nm_variable_genes_min_mean,
+                                                  variable_genes_max_mean = nm_variable_genes_max_mean,
+                                                  variable_genes_min_disp = nm_variable_genes_min_disp,
+                                                  clip_values_max_std = nm_clip_values_max_std)
     
     # Normalization
     normalization_timestamp = time.time()
@@ -258,14 +261,14 @@ def main():
     # Feature Selection
     ###############################################################################################
     
-    #list_of_genes_of_interest = ["MFAP5", "MAFP5"]
-    list_of_genes_of_interest = ["SAT1", "FTL"]
-    log_variance_ratio = True
+    #fs_list_of_genes_of_interest = ["MFAP5", "MAFP5"]
+    fs_list_of_genes_of_interest = ["SAT1", "FTL"]
+    fs_log_variance_ratio = True
 
     # Perform feature selection
     feature_selection_instance = FeatureSelection(anndata_expression_matrix, temporary_location)
-    feature_selection_instance.feature_selection_workflow(list_of_genes_of_interest = list_of_genes_of_interest, 
-                                                          log_variance_ratio = log_variance_ratio)
+    feature_selection_instance.feature_selection_workflow(list_of_genes_of_interest = fs_list_of_genes_of_interest, 
+                                                          log_variance_ratio = fs_log_variance_ratio)
 
     # Feature selection time
     feature_selection_timestamp = time.time()
@@ -275,18 +278,18 @@ def main():
     # Dimensionality Reduction
     ###############################################################################################
     
-    number_of_neighbors = 10
-    number_of_pcs = 40
-    #list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
-    list_of_genes_of_interest = ["SAT1", "FTL"]
-    clustering_method = "leiden"
+    dr_number_of_neighbors = 10
+    dr_number_of_pcs = 40
+    #dr_list_of_genes_of_interest = ["MFAP5", "SPARCL1"]
+    dr_list_of_genes_of_interest = ["SAT1", "FTL"]
+    dr_clustering_method = "leiden"
 
     # Perform dimensionality reduction
     dimensionality_reduction_instance = DimensionalityReduction(anndata_expression_matrix, temporary_location)
-    dimensionality_reduction_instance.dimensionality_reduction_workflow(number_of_neighbors = number_of_neighbors,
-                                                                        number_of_pcs = number_of_pcs,
-                                                                        list_of_genes_of_interest = list_of_genes_of_interest,
-                                                                        clustering_method = clustering_method)
+    dimensionality_reduction_instance.dimensionality_reduction_workflow(number_of_neighbors = dr_number_of_neighbors,
+                                                                        number_of_pcs = dr_number_of_pcs,
+                                                                        list_of_genes_of_interest = dr_list_of_genes_of_interest,
+                                                                        clustering_method = dr_clustering_method)
 
     # Dimensionality reduction time
     dimensionality_reduction_timestamp = time.time()
@@ -296,14 +299,14 @@ def main():
     # Clustering
     ###############################################################################################
 
-    clustering_method = "leiden"
-    #list_of_genes_of_interest = ["MFAP5", "SPARCL1"] 
-    list_of_genes_of_interest = ["SAT1", "FTL"]    
+    cl_clustering_method = "leiden"
+    #cl_list_of_genes_of_interest = ["MFAP5", "SPARCL1"] 
+    cl_list_of_genes_of_interest = ["SAT1", "FTL"]    
 
     # Perform clustering
     clustering_instance = Clustering(anndata_expression_matrix, temporary_location)
-    clustering_instance.clustering_workflow(clustering_method = clustering_method, 
-                                            list_of_genes_of_interest = list_of_genes_of_interest)
+    clustering_instance.clustering_workflow(clustering_method = cl_clustering_method, 
+                                            list_of_genes_of_interest = cl_list_of_genes_of_interest)
 
     # Clustering time
     clustering_timestamp = time.time()

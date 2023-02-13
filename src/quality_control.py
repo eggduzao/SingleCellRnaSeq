@@ -101,35 +101,3 @@ class QualityControl():
         self.anndata_expression_matrix = self.anndata_expression_matrix[self.anndata_expression_matrix.obs.n_genes_by_counts < max_number_of_genes_by_counts, :]
         self.anndata_expression_matrix = self.anndata_expression_matrix[self.anndata_expression_matrix.obs.pct_counts_mt < max_percentage_mithocondrial_counts, :]
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -32,29 +32,24 @@ import numpy
 ###################################################################################################
 
 class ConfigurationFile:
-    """This class represents TODO.
+    """This class represents a configuration file.
 
     *Keyword arguments:*
 
-      - argument1 -- Short description. This argument represents a long description. It can be:
-        - Possibility 1: A possibility 1.
-        - Possibility 2: A possibility 2.
+      - None
 
-      - argument2 -- Short description. This argument represents a long description. It can be:
-        - Possibility 1: A possibility 1.
-        - Possibility 2: A possibility 2.
     """
 
     def __init__(self):
-        """Returns TODO.
+        """Initializes all the paths needed to access the data folder and the configuration file.
     
         *Keyword arguments:*
     
-          - argument -- An argument.
+          - None
     
         *Return:*
     
-          - return -- A return.
+          - None
         """
 
         # Fetching scaw_data_path
@@ -71,7 +66,16 @@ class ConfigurationFile:
         self.data_dir = self.scaw_data_path
 
 class GenomeData(ConfigurationFile):
-    """Represent genomic data. Inherits ConfigurationFile."""
+    """Represent genomic data. Inherits ConfigurationFile.
+    
+        *Keyword arguments:*
+    
+          - None
+    
+        *Return:*
+    
+          - None
+    """
 
     def __init__(self, organism):
         """Initializes GenomeData.
@@ -132,17 +136,15 @@ class GenomeData(ConfigurationFile):
 
 
 class GeneAlias(ConfigurationFile):
-    """This class represents TODO.
+    """Represents the gene alias file. Inherits ConfigurationFile.
 
     *Keyword arguments:*
 
-      - argument1 -- Short description. This argument represents a long description. It can be:
-        - Possibility 1: A possibility 1.
-        - Possibility 2: A possibility 2.
-  
-      - argument2 -- Short description. This argument represents a long description. It can be:
-        - Possibility 1: A possibility 1.
-        - Possibility 2: A possibility 2.
+      - organism -- Short description. This argument represents a long description. It can be:
+        - hg19: Human genome build 19.
+        - hg38: Human genome build 38.
+        - mm9: Mus musculus build 9.
+        - mm10: Mus musculus build 10.
     """
 
     def __init__(self, organism):
@@ -150,11 +152,15 @@ class GeneAlias(ConfigurationFile):
     
         *Keyword arguments:*
     
-          - argument -- An argument.
+          - organism -- Short description. This argument represents a long description. It can be:
+            - hg19: Human genome build 19.
+            - hg38: Human genome build 38.
+            - mm9: Mus musculus build 9.
+            - mm10: Mus musculus build 10.
     
         *Return:*
     
-          - return -- A return.
+          - None
         """
 
         # Configuration file initialization

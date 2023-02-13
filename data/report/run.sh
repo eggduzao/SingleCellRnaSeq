@@ -1,11 +1,11 @@
 #!/bin/bash
 
-pdflatex report.tex
-pdflatex report.tex
-bibtex report
-bibtex report
-pdflatex report.tex
-pdflatex report.tex
+pdflatex report.tex -quiet > /dev/null 2>&1
+pdflatex report.tex -quiet > /dev/null 2>&1
+bibtex report > /dev/null 2>&1
+bibtex report > /dev/null 2>&1
+pdflatex report.tex -quiet > /dev/null 2>&1
+pdflatex report.tex -quiet > /dev/null 2>&1
 
 rm -rf report.aux
 rm -rf report.bbl

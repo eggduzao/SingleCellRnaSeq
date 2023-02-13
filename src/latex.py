@@ -255,25 +255,25 @@ class Latex():
         
         # Figure - Top expressed genes before normalization
         figure_file_name = os.path.join(self.temporary_location, "top_expressed_genes.pdf")
-        figure_caption = "Placeholder"
+        figure_caption = "Non-normalized top expressed genes."
         figure_label = "top.expressed.genes"
         self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.8)
         
         # Figure - Violin plot of statistics
         figure_file_name = os.path.join(self.temporary_location, "violinplot_of_statistics.pdf")
-        figure_caption = "Placeholder"
+        figure_caption = "General statistics."
         figure_label = "violinplot.of.statistics"
         self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
         
         # Figure - Scatterplot of total counts vs mitochondrial counts
         figure_file_name = os.path.join(self.temporary_location, "scatter_total_mito.pdf")
-        figure_caption = "Placeholder"
+        figure_caption = "Total count vs Mitochondrial counts."
         figure_label = "scatter.total.mito"
         self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
         
         # Figure - Scatterplot of total counts vs total genes by counts
         figure_file_name = os.path.join(self.temporary_location, "scatter_total_gbc.pdf")
-        figure_caption = "Placeholder"
+        figure_caption = "Total counts vs total genes by counts (i.e. genes with counts)."
         figure_label = "scatter.total.gbc"
         self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
         
@@ -297,7 +297,7 @@ class Latex():
         
         # Figure - Top expressed genes before normalization
         figure_file_name = os.path.join(self.temporary_location, "normalized_variable_genes.pdf")
-        figure_caption = "Placeholder"
+        figure_caption = "Significant genes after normalization."
         figure_label = "normalized.variable.genes"
         self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
         
