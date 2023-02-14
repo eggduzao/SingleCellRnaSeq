@@ -305,6 +305,31 @@ class ArgumentParser():
         # Verify operational options
         # TODO
 
+
+    def read_input_manifest_file(self):
+        """Reads the input manifest format table. The table has the following format:
+
+    
+        *Keyword arguments:*
+    
+          - argument -- An argument.
+    
+        *Return:*
+    
+          - return -- A return.
+        """
+
+        # Appending input table
+        input_table = []
+        input_file_name = self.arguments[0]
+        for line in input_file_name:
+          ll = line.strip().split("\t")
+          input_table.append(ll)
+
+        # Returning objects
+        return input_table
+
+
     #############################################################################
     # Auxiliary Operations
     #############################################################################

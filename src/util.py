@@ -273,6 +273,11 @@ class ReportConfiguration(ConfigurationFile):
     
           - return -- A return.
         """
+        #tex_folder_file_name = os.path.join(output_report_location, self.tex_folder)
+        #if(os.path.exists(tex_folder_file_name)):
+        #    command = "rm -rf " + tex_folder_file_name
+        #    os.system(command)
+
         for file_name in [self.tex_folder, self.reportstylebasic_file_name, self.reportstylefull_file_name, self.executable_file_name]:
             command = "mv " + file_name + " " + output_report_location
             os.system(command)
