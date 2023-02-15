@@ -1,8 +1,8 @@
-GroupID	SampleID	Condition	InputFile
-01	01	CD45NL	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
-01	02	CD45NO	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
-#02	01	CD45OL	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
-#02	02	CD45NO	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
+GroupID	SampleID	BatchID	Condition	InputFile
+01	01	01	CD45NL	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
+01	02	01	CD45NO	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
+#02	01	01	CD45OL	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
+#02	02	01	CD45NO	/home/egg/Projects/SingleCellRnaSeq/test/2_CellRangerInput/raw_feature_bc_matrix/
 
 
 

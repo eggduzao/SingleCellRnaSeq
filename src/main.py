@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 # Internal
 from src.__version__ import __version__
-from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias, ReportConfiguration
+from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias, ReportConfiguration, InputMatrixColumnType
 from src.arguments import ArgumentParser
 from src.io import InputOutput
 from src.quality_control import QualityControl
@@ -32,6 +32,7 @@ from src.dimensionality_reduction import DimensionalityReduction
 from src.clustering import Clustering
 from src.de_analysis import DEAnalysis
 from src.latex import Latex
+
 
 # External
 import numpy as np
@@ -97,7 +98,7 @@ def main():
     opts = argument_parser.options
 
     # Arguments
-    input_matrix_file_name = argument_parser.read_input_manifest_file()
+    input_matrix = argument_parser.read_input_manifest_file()
     general_temporary_location = os.path.abspath(os.path.expanduser(args[1]))
     general_output_location = os.path.abspath(os.path.expanduser(args[2]))
 
@@ -133,7 +134,7 @@ def main():
     temporary_file_type = "h5ad"
     
     # Reading input file
-    inputoutput_instance = InputOutput(input_matrix_file_name, input_type, general_temporary_location, temporary_file_type, output_type, files_to_remove, gene_alias, seed)
+    inputoutput_instance = InputOutput(input_matrix, input_type, general_temporary_location, temporary_file_type, output_type, files_to_remove, gene_alias, seed)
     
     # Reading file
     anndata_expression_matrix_vector = None
@@ -143,7 +144,7 @@ def main():
     sample_information_matrix = []
     counter = 0
     for anndata_expression_matrix in anndata_expression_matrix_vector:
-        condition_name = input_matrix_file_name[counter][2] # Condition name
+        condition_name = input_matrix[counter][InputMatrixColumnType.CONDITION] # Condition name
         number_of_cells = len(anndata_expression_matrix.obs) # Number of cells
         number_of_genes = len(anndata_expression_matrix.var) # Number of genes
         sample_information_matrix.append([condition_name, number_of_cells, number_of_genes]) # [Number of cells, number of genes]
@@ -220,7 +221,7 @@ def main():
     # Quality Control
     ###############################################################################################
 
-    """
+
 
     qc_top_expressed_genes = 20
     qc_min_genes_per_cell = 200
@@ -229,16 +230,23 @@ def main():
     qc_max_percentage_mithocondrial_counts = 5
     
     # Perform quality control
-    quality_control_instance = QualityControl(anndata_expression_matrix, temporary_location)
-    quality_control_instance.quality_control_workflow(top_expressed_genes = qc_top_expressed_genes,
-                                                      min_genes_per_cell = qc_min_genes_per_cell,
-                                                      min_cells_per_gene = qc_min_cells_per_gene,
-                                                      max_number_of_genes_by_counts = qc_max_number_of_genes_by_counts,
-                                                      max_percentage_mithocondrial_counts = qc_max_percentage_mithocondrial_counts)
+    quality_control_instance = QualityControl()
+    
+    anndata_expression_matrix_vector_counter = 0
+    for input_matrix_file_vector in input_matrix:
+        quality_control_instance.quality_control_workflow(anndata_expression_matrix = anndata_expression_matrix_vector[anndata_expression_matrix_vector_counter],
+                                                          temporary_folder_name = input_matrix_file_vector[InputMatrixColumnType.TEMPFILE],
+                                                          top_expressed_genes = qc_top_expressed_genes,
+                                                          min_genes_per_cell = qc_min_genes_per_cell,
+                                                          min_cells_per_gene = qc_min_cells_per_gene,
+                                                          max_number_of_genes_by_counts = qc_max_number_of_genes_by_counts,
+                                                          max_percentage_mithocondrial_counts = qc_max_percentage_mithocondrial_counts)
+        anndata_expression_matrix_vector_counter += 1
     
     
     # Quality control time
     quality_control_timestamp = time.time()
+
 
     
     ###############################################################################################
@@ -254,17 +262,24 @@ def main():
 
 
     # Perform normalization
-    normalization_instance = Normalization(anndata_expression_matrix, temporary_location)
-    normalization_instance.normalization_workflow(total_count_normalization_target = nm_total_count_normalization_target,
-                                                  normalization_method = nm_normalization_method,
-                                                  variable_genes_min_mean = nm_variable_genes_min_mean,
-                                                  variable_genes_max_mean = nm_variable_genes_max_mean,
-                                                  variable_genes_min_disp = nm_variable_genes_min_disp,
-                                                  clip_values_max_std = nm_clip_values_max_std)
+    normalization_instance = Normalization()
+    
+    anndata_expression_matrix_vector_counter = 0
+    for input_matrix_file_vector in input_matrix:
+        normalization_instance.normalization_workflow(anndata_expression_matrix = anndata_expression_matrix_vector[anndata_expression_matrix_vector_counter],
+                                                      temporary_folder_name = input_matrix_file_vector[InputMatrixColumnType.TEMPFILE],
+                                                      total_count_normalization_target = nm_total_count_normalization_target,
+                                                      normalization_method = nm_normalization_method,
+                                                      variable_genes_min_mean = nm_variable_genes_min_mean,
+                                                      variable_genes_max_mean = nm_variable_genes_max_mean,
+                                                      variable_genes_min_disp = nm_variable_genes_min_disp,
+                                                      clip_values_max_std = nm_clip_values_max_std)
+        anndata_expression_matrix_vector_counter += 1
     
     # Normalization
     normalization_timestamp = time.time()
     
+    """
 
     ###############################################################################################
     # Feature Selection

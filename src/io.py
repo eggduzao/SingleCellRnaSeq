@@ -17,6 +17,7 @@ import os
 import random
 
 # Internal
+from src.util import InputMatrixColumnType
 
 # External
 from scanpy import read_csv, read_h5ad, read_10x_mtx
@@ -88,7 +89,7 @@ class InputOutput():
         for i in range(0, len(self.input_file_name_matrix)):
         
             # Input file name
-            input_file_name = self.input_file_name_matrix[i][3]
+            input_file_name = self.input_file_name_matrix[i][InputMatrixColumnType.INPUTFILE]
         
             # CSV File
             if(self.input_file_type == "csv"):

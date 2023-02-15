@@ -27,6 +27,30 @@ import configparser
 # External
 import numpy
 
+
+###################################################################################################
+# Helper Classes
+###################################################################################################
+
+class InputMatrixColumnType:
+    """This class represents the column types of the input matrix.
+
+    *Keyword arguments:*
+
+      - None
+
+    """
+    GROUPID = 0
+    SAMPLEID = 1
+    BATCHID = 2
+    CONDITION = 3
+    INPUTFILE = 4
+    TEMPFILE = 5
+    OUTFILE = 6
+
+
+
+
 ###################################################################################################
 # Configuration File Handling
 ###################################################################################################
@@ -273,10 +297,11 @@ class ReportConfiguration(ConfigurationFile):
     
           - return -- A return.
         """
-        #tex_folder_file_name = os.path.join(output_report_location, self.tex_folder)
-        #if(os.path.exists(tex_folder_file_name)):
-        #    command = "rm -rf " + tex_folder_file_name
-        #    os.system(command)
+        tex_file_name = self.tex_folder.split("/")[-1]
+        tex_folder_file_name = os.path.join(output_report_location, tex_file_name)
+        if(os.path.exists(tex_folder_file_name)):
+            command = "rm -rf " + tex_folder_file_name
+            os.system(command)
 
         for file_name in [self.tex_folder, self.reportstylebasic_file_name, self.reportstylefull_file_name, self.executable_file_name]:
             command = "mv " + file_name + " " + output_report_location

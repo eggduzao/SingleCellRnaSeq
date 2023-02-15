@@ -21,7 +21,7 @@ import multiprocessing
 
 # Internal
 from src.__version__ import __version__
-from src.util import PassThroughOptionParser, AuxiliaryFunctions
+from src.util import PassThroughOptionParser, AuxiliaryFunctions, InputMatrixColumnType
 
 # External
 
@@ -324,12 +324,27 @@ class ArgumentParser():
         input_file_name = self.arguments[0]
         input_file = open(input_file_name, "r")
         for line in input_file:
+        
+            # Comment and header lines
             if(len(line) < 5 or line[0] == "#"): continue
             if("GroupID" in line): continue
+            
+            # Canonical Lines
             ll = line.strip().split("\t")
-            ll[3] = os.path.abspath(os.path.expanduser(ll[3]))
-            ll.append( os.path.abspath(os.path.expanduser(os.path.join(self.arguments[1], ll[2]))) )
-            ll.append( os.path.abspath(os.path.expanduser(os.path.join(self.arguments[2], ll[2]))) )
+            ll[InputMatrixColumnType.INPUTFILE] = os.path.abspath(os.path.expanduser(ll[InputMatrixColumnType.INPUTFILE]))
+            
+            # Temporary condition folder
+            temporary_condition_folder = os.path.abspath(os.path.expanduser(os.path.join(self.arguments[1], ll[InputMatrixColumnType.CONDITION])))
+            if(not os.path.exists(temporary_condition_folder)):
+                os.makedirs(temporary_condition_folder)
+            ll.append(temporary_condition_folder)
+            
+            # Output condition folder
+            output_condition_folder = os.path.abspath(os.path.expanduser(os.path.join(self.arguments[2], ll[InputMatrixColumnType.CONDITION])))
+            if(not os.path.exists(temporary_condition_folder)):
+                os.makedirs(temporary_condition_folder)
+            ll.append(output_condition_folder)
+            
             input_table.append(ll)
         input_file.close()
 
