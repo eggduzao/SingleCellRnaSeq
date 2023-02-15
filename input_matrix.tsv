@@ -1,0 +1,10 @@
+GroupID	SampleID	Condition	InputFile
+01	01	CD45NL	/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717152_CD45N-L1.csv
+01	02	CD45NO	/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717155_CD45N-O1.csv
+#02	01	CD45OL	/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717158_CD45P-L1.csv
+#02	02	CD45NO	/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717161_CD45P-O1.csv
+
+
+
+
+

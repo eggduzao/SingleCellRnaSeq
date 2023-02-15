@@ -97,9 +97,9 @@ def main():
     opts = argument_parser.options
 
     # Arguments
-    input_matrix_file_name = os.path.abspath(os.path.expanduser(args[0]))
-    temporary_location = os.path.abspath(os.path.expanduser(args[1]))
-    output_location = os.path.abspath(os.path.expanduser(args[2]))
+    input_matrix_file_name = argument_parser.read_input_manifest_file()
+    general_temporary_location = os.path.abspath(os.path.expanduser(args[1]))
+    general_output_location = os.path.abspath(os.path.expanduser(args[2]))
 
     # Options
     organism = opts.organism
@@ -133,15 +133,22 @@ def main():
     temporary_file_type = "h5ad"
     
     # Reading input file
-    inputoutput_instance = InputOutput(input_matrix_file_name, input_type, temporary_location, temporary_file_type, output_type, files_to_remove, gene_alias, seed)
+    inputoutput_instance = InputOutput(input_matrix_file_name, input_type, general_temporary_location, temporary_file_type, output_type, files_to_remove, gene_alias, seed)
     
     # Reading file
-    anndata_expression_matrix = None
-    anndata_expression_matrix = inputoutput_instance.read(io_input_file_is_reversed = io_input_file_is_reversed)
+    anndata_expression_matrix_vector = None
+    anndata_expression_matrix_vector = inputoutput_instance.read(io_input_file_is_reversed = io_input_file_is_reversed)
     
-    print(anndata_expression_matrix)
-    print(len(anndata_expression_matrix.obs)) # Number of cells
-    print(len(anndata_expression_matrix.var)) # Number of genes
+    # Sample information
+    sample_information_matrix = []
+    counter = 0
+    for anndata_expression_matrix in anndata_expression_matrix_vector:
+        condition_name = input_matrix_file_name[counter][2] # Condition name
+        number_of_cells = len(anndata_expression_matrix.obs) # Number of cells
+        number_of_genes = len(anndata_expression_matrix.var) # Number of genes
+        sample_information_matrix.append([condition_name, number_of_cells, number_of_genes]) # [Number of cells, number of genes]
+        counter += 1
+
     
     ###############################################################################################
     # Tool's Versions
@@ -212,6 +219,8 @@ def main():
     ###############################################################################################
     # Quality Control
     ###############################################################################################
+
+    """
 
     qc_top_expressed_genes = 20
     qc_min_genes_per_cell = 200
@@ -358,7 +367,7 @@ def main():
     # DE Analysis time
     de_analysis_timestamp = time.time()
     
-    
+    """ 
     ###############################################################################################
     # Compositional Analysis
     ###############################################################################################
@@ -414,38 +423,41 @@ def main():
     ###############################################################################################
 
     # Report variables
-    output_report_location = os.path.join(output_location, "report")
+    output_report_location = os.path.join(general_output_location, "report")
     report_configuration.move_latex_files(output_report_location)
     
     # LaTeX report
-    latex_instance = Latex(temporary_location, output_report_location)
+    latex_instance = Latex(general_temporary_location, output_report_location)
     latex_instance.open_report()
     latex_instance.create_first_page()
     latex_instance.create_tools_versions_report(tool_version_dictionary)
-    latex_instance.create_alignment_report()
-    latex_instance.create_raw_data_preprocessing_report()
-    latex_instance.create_quality_control_report()
-    latex_instance.create_normalization_report()
-    latex_instance.create_feature_selection_report()
-    latex_instance.create_dimensionality_reduction_report()
-    latex_instance.create_clustering_report()
-    latex_instance.create_annotation_report()
-    latex_instance.create_data_integration_report()
-    latex_instance.create_de_analysis_report()
-    latex_instance.create_compositional_analysis_report()
-    latex_instance.create_gsea_analysis_report()
-    latex_instance.create_pseudotemporal_ordering_report()
-    latex_instance.create_rna_velocity_report()
-    latex_instance.create_lineage_tracing_report()
+    latex_instance.create_sample_information_report(sample_information_matrix)
+    #latex_instance.create_alignment_report()
+    #latex_instance.create_raw_data_preprocessing_report()
+    #latex_instance.create_quality_control_report()
+    #latex_instance.create_normalization_report()
+    #latex_instance.create_feature_selection_report()
+    #latex_instance.create_dimensionality_reduction_report()
+    #latex_instance.create_clustering_report()
+    #latex_instance.create_annotation_report()
+    #latex_instance.create_data_integration_report()
+    #latex_instance.create_de_analysis_report()
+    #latex_instance.create_compositional_analysis_report()
+    #latex_instance.create_gsea_analysis_report()
+    #latex_instance.create_pseudotemporal_ordering_report()
+    #latex_instance.create_rna_velocity_report()
+    #latex_instance.create_lineage_tracing_report()
     latex_instance.create_bibliography()
     latex_instance.close_report()
     
     # Running LaTeX report
     report_configuration.run_report(output_report_location)
+
     
     ###############################################################################################
     # Deleting objects
     ###############################################################################################
+
     
     # Files to remove
     for filename in files_to_remove:
@@ -456,7 +468,7 @@ def main():
     print("Completed in :" + str(lineage_tracing_timestamp - alignment_preprocessing_timestamp) + "s")
 
     
-    
+ 
     
     
    

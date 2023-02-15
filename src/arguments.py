@@ -322,9 +322,16 @@ class ArgumentParser():
         # Appending input table
         input_table = []
         input_file_name = self.arguments[0]
-        for line in input_file_name:
-          ll = line.strip().split("\t")
-          input_table.append(ll)
+        input_file = open(input_file_name, "r")
+        for line in input_file:
+            if(len(line) < 5 or line[0] == "#"): continue
+            if("GroupID" in line): continue
+            ll = line.strip().split("\t")
+            ll[3] = os.path.abspath(os.path.expanduser(ll[3]))
+            ll.append( os.path.abspath(os.path.expanduser(os.path.join(self.arguments[1], ll[2]))) )
+            ll.append( os.path.abspath(os.path.expanduser(os.path.join(self.arguments[2], ll[2]))) )
+            input_table.append(ll)
+        input_file.close()
 
         # Returning objects
         return input_table

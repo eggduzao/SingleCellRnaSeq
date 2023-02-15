@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Arguments
-input_matrix="--input_matrix=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/GSM4717152_CD45N-L1.csv"
+input_matrix="--input_matrix=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/data/input_matrix.tsv"
 temporary_location="--temporary_location=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/temp/"
 output_location="--output_location=/home/egg/Projects/SingleCellRnaSeq/test/1_WAT/output/"
 
