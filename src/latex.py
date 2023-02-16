@@ -16,6 +16,7 @@ Authors: Eduardo G. Gusmao.
 import os
 
 # Internal
+from src.util import InputMatrixColumnType
 
 # External
 
@@ -275,7 +276,7 @@ class Latex():
         
         self.report_file_name.write("\\clearpage\n\n")
 
-    def create_quality_control_report(self):
+    def create_quality_control_report(self, input_matrix):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -289,35 +290,49 @@ class Latex():
         
         self.report_file_name.write("\\section{Quality Control}\n\n")
         
-        # Figure - Top expressed genes before normalization
-        figure_file_name = os.path.join(self.temporary_location, "top_expressed_genes.pdf")
-        figure_caption = "Non-normalized top expressed genes."
-        figure_label = "top.expressed.genes"
-        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.8)
+        self.report_file_name.write("\\begin{itemize}\n")
+        self.report_file_name.write(" \\item[•] Cells with less than 200 genes were filtered.\n")
+        self.report_file_name.write(" \\item[•] Genes expressed in less than 3 cells were filtered.\n")
+        self.report_file_name.write(" \\item[•] Genes with more than 2500 genes-by-counts were filtered.\n")
+        self.report_file_name.write(" \\item[•] Cells with more than 5\\% mitochondrial gene counts were filtered.\n")
+        self.report_file_name.write("\\end{itemize}\n\n")
         
-        # Figure - Violin plot of statistics
-        figure_file_name = os.path.join(self.temporary_location, "violinplot_of_statistics.pdf")
-        figure_caption = "General statistics."
-        figure_label = "violinplot.of.statistics"
-        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
+        for input_vector in input_matrix:
         
-        # Figure - Scatterplot of total counts vs mitochondrial counts
-        figure_file_name = os.path.join(self.temporary_location, "scatter_total_mito.pdf")
-        figure_caption = "Total count vs Mitochondrial counts."
-        figure_label = "scatter.total.mito"
-        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
+            # Temporary location of figures
+            temporary_location = input_vector[InputMatrixColumnType.TEMPFILE]
+            
+            self.report_file_name.write("\\subsection*{" + input_vector[InputMatrixColumnType.CONDITION] + "}\n\n")
         
-        # Figure - Scatterplot of total counts vs total genes by counts
-        figure_file_name = os.path.join(self.temporary_location, "scatter_total_gbc.pdf")
-        figure_caption = "Total counts vs total genes by counts (i.e. genes with counts)."
-        figure_label = "scatter.total.gbc"
-        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
+            # Figure - Top expressed genes before normalization
+            figure_file_name = os.path.join(temporary_location, "top_expressed_genes.pdf")
+            figure_caption = "Non-normalized top expressed genes."
+            figure_label = "top.expressed.genes"
+            self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
+        
+            # Figure - Violin plot of statistics
+            figure_file_name = os.path.join(temporary_location, "violinplot_of_statistics.pdf")
+            figure_caption = "General statistics."
+            figure_label = "violinplot.of.statistics"
+            self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
+        
+            # Figure - Scatterplot of total counts vs mitochondrial counts
+            figure_file_name = os.path.join(temporary_location, "scatter_total_mito.pdf")
+            figure_caption = "Total count vs Mitochondrial counts."
+            figure_label = "scatter.total.mito"
+            self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
+        
+            # Figure - Scatterplot of total counts vs total genes by counts
+            figure_file_name = os.path.join(temporary_location, "scatter_total_gbc.pdf")
+            figure_caption = "Total counts vs total genes by counts (i.e. genes with counts)."
+            figure_label = "scatter.total.gbc"
+            self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 0.5)
         
         
         self.report_file_name.write("\\clearpage\n\n")
 
 
-    def create_normalization_report(self):
+    def create_normalization_report(self, input_matrix):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -330,12 +345,27 @@ class Latex():
         """
         
         self.report_file_name.write("\\section{Normalization}\n\n")
+
+        self.report_file_name.write("\\begin{itemize}\n")
+        self.report_file_name.write(" \\item[•] Normalization by total counts (10e4) was performed.\n")
+        self.report_file_name.write(" \\item[•] The log1P of the counts was taken.\n")
+        self.report_file_name.write(" \\item[•] Non-highly variable genes were filtered.\n")
+        self.report_file_name.write(" \\item[•] Effects of total count normalization and mitochondrial filtering were regressed out.\n")
+        self.report_file_name.write(" \\item[•] Gene counts were scaled to unit variance and all genes with standard deviation $>$10 were filtered.\n")
+        self.report_file_name.write("\\end{itemize}\n\n")
+
+        for input_vector in input_matrix:
         
-        # Figure - Top expressed genes before normalization
-        figure_file_name = os.path.join(self.temporary_location, "normalized_variable_genes.pdf")
-        figure_caption = "Significant genes after normalization."
-        figure_label = "normalized.variable.genes"
-        self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
+            # Temporary location of figures
+            temporary_location = input_vector[InputMatrixColumnType.TEMPFILE]
+            
+            self.report_file_name.write("\\subsection*{" + input_vector[InputMatrixColumnType.CONDITION] + "}\n\n")
+
+            # Figure - Top expressed genes before normalization
+            figure_file_name = os.path.join(temporary_location, "normalized_variable_genes.pdf")
+            figure_caption = "Significant genes after normalization."
+            figure_label = "normalized.variable.genes"
+            self.add_figure(figure_file_name, figure_caption, figure_label, position = "htb", text_width = 1)
         
         self.report_file_name.write("\\clearpage\n\n")
         

@@ -279,7 +279,7 @@ def main():
     # Normalization
     normalization_timestamp = time.time()
     
-    """
+
 
     ###############################################################################################
     # Feature Selection
@@ -290,9 +290,15 @@ def main():
     fs_log_variance_ratio = True
 
     # Perform feature selection
-    feature_selection_instance = FeatureSelection(anndata_expression_matrix, temporary_location)
-    feature_selection_instance.feature_selection_workflow(list_of_genes_of_interest = fs_list_of_genes_of_interest, 
-                                                          log_variance_ratio = fs_log_variance_ratio)
+    feature_selection_instance = FeatureSelection()
+
+    anndata_expression_matrix_vector_counter = 0
+    for input_matrix_file_vector in input_matrix:
+        feature_selection_instance.feature_selection_workflow(anndata_expression_matrix = anndata_expression_matrix_vector[anndata_expression_matrix_vector_counter],
+                                                              temporary_folder_name = input_matrix_file_vector[InputMatrixColumnType.TEMPFILE],
+                                                              list_of_genes_of_interest = fs_list_of_genes_of_interest, 
+                                                              log_variance_ratio = fs_log_variance_ratio)
+        anndata_expression_matrix_vector_counter += 1
 
     # Feature selection time
     feature_selection_timestamp = time.time()
@@ -309,16 +315,22 @@ def main():
     dr_clustering_method = "leiden"
 
     # Perform dimensionality reduction
-    dimensionality_reduction_instance = DimensionalityReduction(anndata_expression_matrix, temporary_location)
-    dimensionality_reduction_instance.dimensionality_reduction_workflow(number_of_neighbors = dr_number_of_neighbors,
-                                                                        number_of_pcs = dr_number_of_pcs,
-                                                                        list_of_genes_of_interest = dr_list_of_genes_of_interest,
-                                                                        clustering_method = dr_clustering_method)
+    dimensionality_reduction_instance = DimensionalityReduction()
+    
+    anndata_expression_matrix_vector_counter = 0
+    for input_matrix_file_vector in input_matrix:
+        dimensionality_reduction_instance.dimensionality_reduction_workflow(anndata_expression_matrix = anndata_expression_matrix_vector[anndata_expression_matrix_vector_counter],
+                                                                            temporary_folder_name = input_matrix_file_vector[InputMatrixColumnType.TEMPFILE],
+                                                                            number_of_neighbors = dr_number_of_neighbors,
+                                                                            number_of_pcs = dr_number_of_pcs,
+                                                                            list_of_genes_of_interest = dr_list_of_genes_of_interest,
+                                                                            clustering_method = dr_clustering_method)
+        anndata_expression_matrix_vector_counter += 1
 
     # Dimensionality reduction time
     dimensionality_reduction_timestamp = time.time()
     
-
+    
     ###############################################################################################
     # Clustering
     ###############################################################################################
@@ -328,13 +340,20 @@ def main():
     cl_list_of_genes_of_interest = ["SAT1", "FTL"]    
 
     # Perform clustering
-    clustering_instance = Clustering(anndata_expression_matrix, temporary_location)
-    clustering_instance.clustering_workflow(clustering_method = cl_clustering_method, 
-                                            list_of_genes_of_interest = cl_list_of_genes_of_interest)
+    clustering_instance = Clustering()
+    
+    anndata_expression_matrix_vector_counter = 0
+    for input_matrix_file_vector in input_matrix:
+        clustering_instance.clustering_workflow(anndata_expression_matrix = anndata_expression_matrix_vector[anndata_expression_matrix_vector_counter],
+                                                temporary_folder_name = input_matrix_file_vector[InputMatrixColumnType.TEMPFILE],
+                                                clustering_method = cl_clustering_method, 
+                                                list_of_genes_of_interest = cl_list_of_genes_of_interest)
+        anndata_expression_matrix_vector_counter += 1
 
     # Clustering time
     clustering_timestamp = time.time()
-    
+
+    """    
     
     ###############################################################################################
     # Annotation
@@ -449,8 +468,8 @@ def main():
     latex_instance.create_sample_information_report(sample_information_matrix)
     #latex_instance.create_alignment_report()
     #latex_instance.create_raw_data_preprocessing_report()
-    #latex_instance.create_quality_control_report()
-    #latex_instance.create_normalization_report()
+    latex_instance.create_quality_control_report(input_matrix)
+    latex_instance.create_normalization_report(input_matrix)
     #latex_instance.create_feature_selection_report()
     #latex_instance.create_dimensionality_reduction_report()
     #latex_instance.create_clustering_report()

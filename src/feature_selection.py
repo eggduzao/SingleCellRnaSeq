@@ -39,7 +39,7 @@ class FeatureSelection():
         - Possibility 2: A possibility 2.
     """
 
-    def __init__(self, anndata_expression_matrix, temporary_folder_name):
+    def __init__(self):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -51,13 +51,11 @@ class FeatureSelection():
           - return -- A return.
         """
 
-        # Class attributes  
-        self.anndata_expression_matrix = anndata_expression_matrix
-        self.temporary_folder_name = temporary_folder_name
+        # Class attributes
         self.scanpy_fig_folder_name = "./figures/"
 
 
-    def feature_selection_workflow(self, list_of_genes_of_interest = [], log_variance_ratio = True):
+    def feature_selection_workflow(self, anndata_expression_matrix, temporary_folder_name, list_of_genes_of_interest = [], log_variance_ratio = True):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -70,20 +68,20 @@ class FeatureSelection():
         """
 
         # Select features with PCA
-        sc.tl.pca(self.anndata_expression_matrix, svd_solver = "arpack")
+        sc.tl.pca(anndata_expression_matrix, svd_solver = "arpack")
 
         # Make scatterplot with list of interesting genes
         for gene in list_of_genes_of_interest:
             try:
-                sc.pl.pca(self.anndata_expression_matrix, color = gene, show = False, save = "_PCA_expression_"+gene+".pdf")
-                AuxiliaryFunctions.save_to_another_folder("PCA_expression_"+gene+".pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+                sc.pl.pca(anndata_expression_matrix, color = gene, show = False, save = "_PCA_expression_"+gene+".pdf")
+                AuxiliaryFunctions.save_to_another_folder("PCA_expression_"+gene+".pdf", self.scanpy_fig_folder_name, temporary_folder_name)
             except Exception:
               # Error - gene not found
               pass
 
         # Plot the variance ratio of the scatterplot
-        sc.pl.pca_variance_ratio(self.anndata_expression_matrix, log = log_variance_ratio, show = False, save="_PCA_variance_ratio.pdf")
-        AuxiliaryFunctions.save_to_another_folder("PCA_variance_ratio.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+        sc.pl.pca_variance_ratio(anndata_expression_matrix, log = log_variance_ratio, show = False, save="_PCA_variance_ratio.pdf")
+        AuxiliaryFunctions.save_to_another_folder("PCA_variance_ratio.pdf", self.scanpy_fig_folder_name, temporary_folder_name)
 
 
 

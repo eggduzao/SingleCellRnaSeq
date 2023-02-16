@@ -39,7 +39,7 @@ class Clustering():
         - Possibility 2: A possibility 2.
     """
 
-    def __init__(self, anndata_expression_matrix, temporary_folder_name):
+    def __init__(self):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -52,11 +52,9 @@ class Clustering():
         """
 
         # Class attributes
-        self.anndata_expression_matrix = anndata_expression_matrix
-        self.temporary_folder_name = temporary_folder_name
         self.scanpy_fig_folder_name = "./figures/"
 
-    def clustering_workflow(self, clustering_method = "leiden", list_of_genes_of_interest = []):
+    def clustering_workflow(self, anndata_expression_matrix, temporary_folder_name, clustering_method = "leiden", list_of_genes_of_interest = []):
         """Returns TODO.
     
         *Keyword arguments:*
@@ -70,13 +68,13 @@ class Clustering():
 
         # Clustering method
         if(clustering_method == "leiden"):
-            sc.tl.leiden(self.anndata_expression_matrix)
+            sc.tl.leiden(anndata_expression_matrix)
         else:
-            sc.tl.louvain(self.anndata_expression_matrix)
+            sc.tl.louvain(anndata_expression_matrix)
 
         # Plot the clusters
-        sc.pl.umap(self.anndata_expression_matrix, color=[clustering_method] + list_of_genes_of_interest, show = False, save="_clustering_umap_data.pdf")
-        AuxiliaryFunctions.save_to_another_folder("clustering_umap_data.pdf", self.scanpy_fig_folder_name, self.temporary_folder_name)
+        sc.pl.umap(anndata_expression_matrix, color=[clustering_method] + list_of_genes_of_interest, show = False, save="_clustering_umap_data.pdf")
+        AuxiliaryFunctions.save_to_another_folder("clustering_umap_data.pdf", self.scanpy_fig_folder_name, temporary_folder_name)
 
 
 

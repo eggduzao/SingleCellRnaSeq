@@ -300,7 +300,7 @@ class ReportConfiguration(ConfigurationFile):
         tex_file_name = self.tex_folder.split("/")[-1]
         tex_folder_file_name = os.path.join(output_report_location, tex_file_name)
         if(os.path.exists(tex_folder_file_name)):
-            command = "rm -rf " + tex_folder_file_namegt 
+            command = "rm -rf " + tex_folder_file_name
             os.system(command)
 
         for file_name in [self.tex_folder, self.reportstylebasic_file_name, self.reportstylefull_file_name, self.executable_file_name]:
