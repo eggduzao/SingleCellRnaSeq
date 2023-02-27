@@ -3,3 +3,9 @@ SCAW.egg-info/
 build/
 dist/
 .DS_Store
+test/1_WAT/data/
+test/1_WAT/output/
+test/1_WAT/temp/
+test/2_CellRangerInput/output/
+test/2_CellRangerInput/raw_feature_bc_matrix/
+test/2_CellRangerInput/temp/
