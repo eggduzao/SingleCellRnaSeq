@@ -20,8 +20,8 @@ import subprocess
 import multiprocessing
 
 # Internal
-from src.__version__ import __version__
-from src.util import PassThroughOptionParser, AuxiliaryFunctions, InputMatrixColumnType
+from scaw.__version__ import __version__
+from scaw.util import PassThroughOptionParser, AuxiliaryFunctions, InputMatrixColumnType
 
 # External
 

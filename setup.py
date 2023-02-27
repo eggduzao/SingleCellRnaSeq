@@ -44,7 +44,7 @@ common_deps = ["numpy>=1.21.0",
 tools_dictionary = {
     "scaw": (
         "scaw",
-        "src.main:main",
+        "scaw.main:main",
         ["numpy>=1.21.0", "scipy>=1.10.0", "pandas>=1.5.0", "scanpy>=1.9.0", "anndata>=0.8.0"],
         []
     )
@@ -115,7 +115,7 @@ def find_version(*file_paths):
 ###################################################################################################
 
 # Parameters
-current_version = find_version("src", "__version__.py")
+current_version = find_version("scaw", "__version__.py")
 usage_message = "python setup.py install [python options] [SCAW options]"
 version_message = "SCAW. Version: " + str(current_version)
 

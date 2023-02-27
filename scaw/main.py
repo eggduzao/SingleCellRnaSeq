@@ -21,17 +21,17 @@ import random
 from collections import OrderedDict
 
 # Internal
-from src.__version__ import __version__
-from src.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias, ReportConfiguration, InputMatrixColumnType
-from src.arguments import ArgumentParser
-from src.io import InputOutput
-from src.quality_control import QualityControl
-from src.normalization import Normalization
-from src.feature_selection import FeatureSelection
-from src.dimensionality_reduction import DimensionalityReduction
-from src.clustering import Clustering
-from src.de_analysis import DEAnalysis
-from src.latex import Latex
+from scaw.__version__ import __version__
+from scaw.util import ErrorHandler, JuicerCommand, CoolerCommand, GeneAlias, ReportConfiguration, InputMatrixColumnType
+from scaw.arguments import ArgumentParser
+from scaw.io import InputOutput
+from scaw.quality_control import QualityControl
+from scaw.normalization import Normalization
+from scaw.feature_selection import FeatureSelection
+from scaw.dimensionality_reduction import DimensionalityReduction
+from scaw.clustering import Clustering
+from scaw.de_analysis import DEAnalysis
+from scaw.latex import Latex
 
 
 # External

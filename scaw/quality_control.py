@@ -15,7 +15,7 @@ Authors: Eduardo G. Gusmao.
 # Python
 
 # Internal
-from src.util import AuxiliaryFunctions, InputMatrixColumnType
+from scaw.util import AuxiliaryFunctions, InputMatrixColumnType
 
 # External
 import scanpy as sc

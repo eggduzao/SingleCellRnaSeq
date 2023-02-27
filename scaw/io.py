@@ -17,7 +17,7 @@ import os
 import random
 
 # Internal
-from src.util import InputMatrixColumnType
+from scaw.util import InputMatrixColumnType
 
 # External
 from scanpy import read_csv, read_h5ad, read_10x_mtx

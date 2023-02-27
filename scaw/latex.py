@@ -16,7 +16,7 @@ Authors: Eduardo G. Gusmao.
 import os
 
 # Internal
-from src.util import InputMatrixColumnType
+from scaw.util import InputMatrixColumnType
 
 # External
 

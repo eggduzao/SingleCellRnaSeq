@@ -16,7 +16,7 @@ Authors: Eduardo G. Gusmao.
 import os
 
 # Internal
-from src.util import AuxiliaryFunctions
+from scaw.util import AuxiliaryFunctions
 
 # External
 import scanpy as sc
